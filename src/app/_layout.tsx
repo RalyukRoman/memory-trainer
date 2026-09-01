@@ -2,7 +2,7 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import { useColorScheme } from 'react-native';
 import { Slot } from 'expo-router';
 
-export default function MainLayout() {
+export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
