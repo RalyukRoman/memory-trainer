@@ -8,5 +8,5 @@ export function useColorScheme() {
   useEffect(() => { setHasHydrated(true); }, []);
 
   if (hasHydrated) return colorScheme;
-  else             return 'light';
+  else             return 'LIGHT';
 }

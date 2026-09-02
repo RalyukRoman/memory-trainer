@@ -1,16 +1,13 @@
-import { StyleSheet, Text, type TextProps } from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 
-import { ThemeColor, Fonts } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import {FONTS}    from '../constants/fonts';
+import {useTheme} from '../hooks/use-theme';
 
 export function ThemedText({
   style,
   type = 'default',
   themeColor,
   ...rest
-}: TextProps & {
-  type?: 'default' | 'title' | 'small' | 'smallBold' | 'subtitle';
-  themeColor?: ThemeColor;
 }) {
   const theme = useTheme();
 
@@ -32,33 +29,28 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
   small: {
-    fontFamily: Fonts.sans,
+    fontFamily: FONTS.SANS,
     fontSize: 14,
-    lineHeight: 20,
-    fontWeight: 500,
+    fontWeight: 'normal',
   },
   smallBold: {
-    fontFamily: Fonts.sans,
+    fontFamily: FONTS.SANS,
     fontSize: 14,
-    lineHeight: 20,
-    fontWeight: 700,
+    fontWeight: 'bold',
   },
   default: {
-    fontFamily: Fonts.sans,
+    fontFamily: FONTS.SANS,
     fontSize: 16,
-    lineHeight: 24,
-    fontWeight: 500,
+    fontWeight: 'normal',
   },
   title: {
-    fontFamily: Fonts.serif,
+    fontFamily: FONTS.SERIF,
     fontSize: 48,
-    fontWeight: 600,
-    lineHeight: 52,
+    fontWeight: 'semibold',
   },
   subtitle: {
-    fontFamily: Fonts.serif,
+    fontFamily: FONTS.SERIF,
     fontSize: 32,
-    lineHeight: 44,
-    fontWeight: 600,
+    fontWeight: 'semibold',
   },
 });
