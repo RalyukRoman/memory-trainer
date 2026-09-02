@@ -8,8 +8,8 @@ export const GAME_CONFIG = {
 };
 
 export const GAME_PHASES = {
-  GENERATE: 'GENERATE',
-  SHOW:     'SHOW',
-  CHECK:    'CHECK',
-  RESULT:   'RESULT',
+  IDLE:   'IDLE',
+  SHOW:   'SHOW',
+  INPUT:  'INPUT',
+  RESULT: 'RESULT',
 };

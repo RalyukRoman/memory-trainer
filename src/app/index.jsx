@@ -15,7 +15,7 @@ export default function GamePage() {
   const [level,   setLevel]   = useState(1);
   const [targets, setTargets] = useState([]);
   const [input,   setInput]   = useState('');
-  const [phase,   setPhase]   = useState('GENERATE');
+  const [phase,   setPhase]   = useState('IDLE');
 
   const [timeLeft,  setTimeLeft]  = useState(GAME_CONFIG.DURATION);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -99,7 +99,7 @@ export default function GamePage() {
           clearInterval(timerRef.current);
         }
 
-        setPhase(GAME_PHASES.CHECK);
+        setPhase(GAME_PHASES.INPUT);
 
         setTimeout(
           () => inputRef.current?.focus(),
@@ -117,7 +117,7 @@ export default function GamePage() {
   };
 
   const handleSubmit = async () => {
-    if (phase !== GAME_PHASES.CHECK) return;
+    if (phase !== GAME_PHASES.INPUT) return;
 
     const formattedInput = input.trim().replace(/\s+/g, '');
     const gameNumberStr = targets.join();
@@ -168,7 +168,7 @@ export default function GamePage() {
               <Text style={[styles.numbersText, { color: theme.text }]}>
                 {phase === GAME_PHASES.SHOW
                   ? targets.join(' ')
-                  : phase === GAME_PHASES.CHECK
+                  : phase === GAME_PHASES.INPUT
                     ? '? '.repeat(targets.length).trim()
                     : targets.join(' ')}
               </Text>
@@ -196,12 +196,12 @@ export default function GamePage() {
               keyboardType="number-pad"
               value={input}
               onChangeText={setInput}
-              editable={phase === GAME_PHASES.CHECK}
+              editable={phase === GAME_PHASES.INPUT}
               onSubmitEditing={handleSubmit}
               placeholderTextColor={theme.textSecondary}
             />
 
-            {phase === GAME_PHASES.CHECK ? (
+            {phase === GAME_PHASES.INPUT ? (
               <Pressable
                 style={({pressed}) => [styles.button, {
                   backgroundColor: theme.text,
