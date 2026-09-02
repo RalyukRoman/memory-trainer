@@ -1,12 +1,15 @@
-import { COLORS } from '@/constants/colors';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useTheme as useNavTheme } from '@react-navigation/native';
 
 export function useTheme() {
-  const scheme = useColorScheme();
+  const theme = useNavTheme();
 
-  const theme = scheme === 'dark'
-    ? 'DARK'
-    : 'LIGHT';
+  const select = (lightValue, darkValue) => (
+    theme.dark ? darkValue : lightValue
+  )
 
-  return COLORS[theme];
+  return {
+    ...theme.colors,
+    isDark: theme.dark,
+    select: select,
+  };
 }

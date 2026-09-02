@@ -3,21 +3,21 @@ import {Platform} from "react-native";
 
 export const FONTS = Platform.select({
   ios: {
-    SANS: 'system-ui',
-    SERIF: 'ui-serif',
-    ROUNDED: 'ui-rounded',
-    MONO: 'ui-monospace',
+    sans:    'system-ui',
+    serif:   'ui-serif',
+    rounded: 'ui-rounded',
+    mono:    'ui-monospace',
   },
   default: {
-    SANS: 'normal',
-    SERIF: 'serif',
-    ROUNDED: 'normal',
-    MONO: 'monospace',
+    sans:    'normal',
+    serif:   'serif',
+    rounded: 'normal',
+    mono:    'monospace',
   },
   web: {
-    SANS: 'var(--font-display)',
-    SERIF: 'var(--font-serif)',
-    ROUNDED: 'var(--font-rounded)',
-    MONO: 'var(--font-mono)',
+    sans:    'var(--font-display)',
+    serif:   'var(--font-serif)',
+    rounded: 'var(--font-rounded)',
+    mono:    'var(--font-mono)',
   },
 });

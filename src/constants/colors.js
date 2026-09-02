@@ -1,16 +1,30 @@
+import { DefaultTheme, DarkTheme } from '@react-navigation/native';
+
 export const COLORS = {
   LIGHT: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
+    ...DefaultTheme.colors,
+    text:               '#000000',
+    background:         '#FFFFFF',
+    backgroundElement:  '#F0F0F0',
     backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
+    textSecondary:      '#60646C',
   },
   DARK: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
+    ...DarkTheme.colors,
+    text:               '#FFFFFF',
+    background:         '#000000',
+    backgroundElement:  '#212225',
     backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
+    textSecondary:      '#B0B4BA',
   },
+};
+
+export const AppLightTheme = {
+  ...DefaultTheme,
+  colors: COLORS.LIGHT,
+};
+
+export const AppDarkTheme = {
+  ...DarkTheme,
+  colors: COLORS.DARK,
 };

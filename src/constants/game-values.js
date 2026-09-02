@@ -1,7 +1,7 @@
 export const GAME_CONFIG = {
   INITIAL_LEVEL: 1,
   INITIAL_SCORE: 0,
-  DURATION_SECONDS: 3.0,
+  DURATION: 3.0,
   TIMER_INTERVAL_MS: 30,
   INPUT_FOCUS_DELAY_MS: 100,
   BASE_DIGIT_COUNT: 4,
@@ -9,7 +9,7 @@ export const GAME_CONFIG = {
 
 export const GAME_PHASES = {
   GENERATE: 'GENERATE',
-  SHOW: 'SHOW',
-  CHECK: 'CHECK',
-  RESULT: 'RESULT',
+  SHOW:     'SHOW',
+  CHECK:    'CHECK',
+  RESULT:   'RESULT',
 };
