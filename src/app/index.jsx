@@ -1,13 +1,13 @@
-import {useState, useEffect, useRef}                  from 'react';
-import {StyleSheet, TextInput, Pressable, View, Text} from 'react-native';
-import {SafeAreaView, SafeAreaProvider}               from 'react-native-safe-area-context';
-import AsyncStorage                                   from '@react-native-async-storage/async-storage';
+import { useState, useEffect, useRef }                  from 'react';
+import { StyleSheet, TextInput, Pressable, View, Text } from 'react-native';
+import { SafeAreaView, SafeAreaProvider }               from 'react-native-safe-area-context';
+import AsyncStorage                                     from '@react-native-async-storage/async-storage';
 
-import {useTheme} from '../hooks/use-theme';
+import { useTheme } from '../hooks/use-theme';
 
-import {GAME_CONFIG, GAME_PHASES} from '../constants/game-values';
-import {STORAGE_KEYS}             from '../constants/storage-keys';
-import {SPACING, BORDER_RADIUS}   from '../constants/tokens';
+import { GAME_CONFIG, GAME_PHASES } from '../constants/game-values';
+import { STORAGE_KEYS }             from '../constants/storage-keys';
+import { SPACING, BORDER_RADIUS }   from '../constants/tokens';
 
 export default function GamePage() {
   const theme = useTheme();

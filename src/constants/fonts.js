@@ -1,5 +1,5 @@
 import '@/global.css';
-import {Platform} from "react-native";
+import { Platform } from "react-native";
 
 export const FONTS = Platform.select({
   ios: {
