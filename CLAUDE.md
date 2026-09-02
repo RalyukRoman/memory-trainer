@@ -16,3 +16,5 @@ When writing styles (Inline styles, StyleSheet, or Styled Components), strictly 
 
 4. **Typography (Типографіка - для текстових елементів)**
     - Examples: `fontSize`, `fontWeight`, `lineHeight`, `letterSpacing`, `color`, `textAlign`.
+
+No need to comment or indent the group, just the order is enough
