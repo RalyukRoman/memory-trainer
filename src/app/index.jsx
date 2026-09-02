@@ -1,21 +1,27 @@
-import { useState, useEffect, useRef }                  from 'react';
-import { StyleSheet, TextInput, Pressable, View, Text } from 'react-native';
-import { SafeAreaView, SafeAreaProvider }               from 'react-native-safe-area-context';
-import AsyncStorage                                     from '@react-native-async-storage/async-storage';
+import { useState, useEffect, useRef }    from 'react';
+import { StyleSheet, View, Text }         from 'react-native';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import AsyncStorage                       from '@react-native-async-storage/async-storage';
 
 import { useTheme } from '../hooks/use-theme';
 
+import { GameNumberDisplay } from '../components/game-number-display';
+import { GameTimer }         from '../components/game-timer';
+import { GameBar }           from '../components/game-bar';
+import { GameScoreBoard }    from '../components/game-score-board';
+
 import { GAME_CONFIG, GAME_PHASES } from '../constants/game-values';
 import { STORAGE_KEYS }             from '../constants/storage-keys';
+import { FONTS }                    from '../constants/fonts';
 import { SPACING, BORDER_RADIUS }   from '../constants/tokens';
 
 export default function GamePage() {
   const theme = useTheme();
 
-  const [level,   setLevel]   = useState(1);
-  const [targets, setTargets] = useState([]);
-  const [input,   setInput]   = useState('');
-  const [phase,   setPhase]   = useState('IDLE');
+  const [level,    setLevel]  = useState(1);
+  const [sequence, setSequence] = useState([]);
+  const [input,    setInput]  = useState('');
+  const [phase,    setPhase]  = useState(GAME_PHASES.IDLE);
 
   const [timeLeft,  setTimeLeft]  = useState(GAME_CONFIG.DURATION);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -27,6 +33,14 @@ export default function GamePage() {
 
   useEffect(() => {
     loadHighScore().then();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
   }, []);
 
   const loadHighScore = async () => {
@@ -41,7 +55,7 @@ export default function GamePage() {
       }
     }
     catch (err) {
-      console.error('Error', err);
+      console.error('Error loading high score:', err);
     }
   };
 
@@ -57,17 +71,17 @@ export default function GamePage() {
       }
     }
     catch (err) {
-      console.error('Error', err);
+      console.error('Error saving high score:', err);
     }
   };
 
-  const generateNumbers = (currentLevel) => {
+  const generateSequence = (currentLevel) => {
     const digitCount = GAME_CONFIG.BASE_DIGIT_COUNT + currentLevel;
     let result = [];
 
     for (let i = 0; i < digitCount; i++) {
-      const randNumb = Math.floor(Math.random() * 10);
-      result.push(randNumb);
+      const randDigit = Math.floor(Math.random() * 10);
+      result.push(randDigit);
     }
 
     return result;
@@ -78,8 +92,8 @@ export default function GamePage() {
       clearInterval(timerRef.current);
     }
 
-    const generated = generateNumbers(newLevel);
-    setTargets(generated);
+    const generated = generateSequence(newLevel);
+    setSequence(generated);
 
     const startTime = Date.now();
     const duration = GAME_CONFIG.DURATION;
@@ -120,14 +134,14 @@ export default function GamePage() {
     if (phase !== GAME_PHASES.INPUT) return;
 
     const formattedInput = input.trim().replace(/\s+/g, '');
-    const gameNumberStr = targets.join();
+    const sequenceStr = sequence.join('');
 
-    const _isCorrect = formattedInput === gameNumberStr;
-    setIsCorrect(_isCorrect);
+    const isInputCorrect = formattedInput === sequenceStr;
+    setIsCorrect(isInputCorrect);
 
     setPhase(GAME_PHASES.RESULT);
 
-    if (isCorrect) {
+    if (isInputCorrect) {
       const nextScore = score + 1;
       const nextLevel = level + 1;
 
@@ -137,14 +151,6 @@ export default function GamePage() {
       setLevel(nextLevel);
     }
   };
-
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, []);
 
   return (
     <SafeAreaProvider>
@@ -157,127 +163,45 @@ export default function GamePage() {
             styles.card,
             { backgroundColor: theme.backgroundElement }
           ]}>
-            <Text style={[styles.headerTitle, { color: theme.text }]}>
+            <Text style={[
+              styles.headerTitle,
+              { color: theme.text }
+            ]}>
               MEMORY TRAINER
             </Text>
 
-            <View style={[
-              styles.numbersBox,
-              { backgroundColor: theme.backgroundSelected }
-            ]}>
-              <Text style={[styles.numbersText, { color: theme.text }]}>
-                {phase === GAME_PHASES.SHOW
-                  ? targets.join(' ')
-                  : phase === GAME_PHASES.INPUT
-                    ? '? '.repeat(targets.length).trim()
-                    : targets.join(' ')}
-              </Text>
-            </View>
-
-            <Text style={[styles.timerText, { color: theme.text }]}>
-              {phase === GAME_PHASES.SHOW
-                ? `${timeLeft.toFixed(2)}s`
-                : 'Hidden'}
-            </Text>
-
-            <Text style={[styles.inputLabel, { color: theme.text }]}>
-              Enter the numbers:
-            </Text>
-
-            <TextInput
-              ref={inputRef}
-              style={[
-                styles.input, {
-                  color: theme.text,
-                  backgroundColor: theme.background,
-                  borderColor: theme.textSecondary,
-                },
-              ]}
-              keyboardType="number-pad"
-              value={input}
-              onChangeText={setInput}
-              editable={phase === GAME_PHASES.INPUT}
-              onSubmitEditing={handleSubmit}
-              placeholderTextColor={theme.textSecondary}
+            <GameNumberDisplay
+              phase={phase}
+              digits={sequence}
+              theme={theme}
             />
 
-            {phase === GAME_PHASES.INPUT ? (
-              <Pressable
-                style={({pressed}) => [styles.button, {
-                  backgroundColor: theme.text,
-                  opacity: pressed ? 0.8 : 1,
-                }]}
-                onPress={handleSubmit}
-              >
-                <Text style={[
-                  styles.buttonText,
-                  { color: theme.background }
-                ]}>
-                  SUBMIT
-                </Text>
-              </Pressable>
-            ) : phase === GAME_PHASES.RESULT ? (
-              <Pressable
-                style={({pressed}) => [
-                  styles.button,
-                  { backgroundColor: theme.text },
-                  pressed && styles.buttonPressed,
-                ]}
-                onPress={() => (isCorrect
-                  ? startRound()
-                  : handleStartGame()
-                )}
-              >
-                <Text style={[
-                  styles.buttonText,
-                  { color: theme.background }
-                ]}>
-                  {isCorrect
-                    ? 'NEXT LEVEL'
-                    : 'TRY AGAIN'}
-                </Text>
-              </Pressable>
-            ) : (
-              <Pressable
-                style={({pressed}) => [
-                  styles.button,
-                  { backgroundColor: theme.text },
-                  pressed && styles.buttonPressed,
-                ]}
-                onPress={handleStartGame}
-              >
-                <Text style={[
-                  styles.buttonText,
-                  { color: theme.background }
-                ]}>
-                  START GAME
-                </Text>
-              </Pressable>
-            )}
+            <GameTimer
+              phase={phase}
+              timeLeft={timeLeft}
+              theme={theme}
+            />
+
+            <GameBar
+              input={input}
+              setInput={setInput}
+              inputRef={inputRef}
+              phase={phase}
+              theme={theme}
+              isCorrect={isCorrect}
+              onSubmit={handleSubmit}
+              onStartGame={handleStartGame}
+              onNextRound={() => startRound(level)}
+              onRestartGame={handleStartGame}
+            />
           </View>
 
-          <View style={styles.statsContainer}>
-            <Text style={[
-              styles.textSmall,
-              { color: theme.text }
-            ]}>
-              Current Score: {score}
-            </Text>
-
-            <Text style={[
-              styles.textSmall,
-              { color: theme.text }
-            ]}>
-              Level: {level}
-            </Text>
-
-            <Text style={[
-              styles.textSmallBold,
-              { color: theme.text }
-            ]}>
-              Best Score: {highScore}
-            </Text>
-          </View>
+          <GameScoreBoard
+            score={score}
+            level={level}
+            highScore={highScore}
+            theme={theme}
+          />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -290,83 +214,23 @@ const styles = StyleSheet.create({
   },
   main: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: SPACING.four,
   },
   card: {
     width: '100%',
     maxWidth: 320,
     alignItems: 'center',
-    padding: SPACING.four,
     gap: SPACING.three,
+    padding: SPACING.four,
     borderRadius: BORDER_RADIUS.lg,
   },
   headerTitle: {
+    fontFamily: FONTS.sans,
     fontSize: 14,
     fontWeight: 'bold',
     letterSpacing: 2,
     textTransform: 'uppercase',
-  },
-  numbersBox: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: SPACING.four,
-    paddingHorizontal: SPACING.three,
-    borderRadius: SPACING.two,
-  },
-  numbersText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    letterSpacing: 6,
-    fontFamily: 'monospace',
-  },
-  timerText: {
-    fontSize: 14,
-    opacity: 0.8,
-  },
-  inputLabel: {
-    fontSize: 14,
-    alignSelf: 'flex-start',
-    marginTop: SPACING.two,
-  },
-  input: {
-    width: '100%',
-    height: 48,
-    textAlign: 'center',
-    paddingHorizontal: SPACING.three,
-    fontSize: 18,
-    letterSpacing: 4,
-    borderWidth: 1,
-    borderRadius: BORDER_RADIUS.sm,
-  },
-  button: {
-    width: '100%',
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: SPACING.two,
-    borderRadius: SPACING.two,
-  },
-  buttonText: {
-    fontWeight: 'bold',
-    letterSpacing: 1.5,
-  },
-  textSmall: {
-    fontSize: 14,
-    fontWeight: 'normal',
-  },
-  textSmallBold: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  statsContainer: {
-    alignItems: 'center',
-    marginTop: SPACING.five,
-    gap: SPACING.one,
-  },
-  buttonPressed: {
-    opacity: 0.8,
   },
 });
