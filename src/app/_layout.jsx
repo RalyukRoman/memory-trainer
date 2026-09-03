@@ -1,8 +1,8 @@
 import { ThemeProvider }  from 'expo-router';
 import { useColorScheme } from 'react-native';
-import { Slot }           from 'expo-router';
+import { Stack }          from 'expo-router';
 
-import { AppLightTheme, AppDarkTheme } from '../constants/colors';
+import { AppLightTheme, AppDarkTheme } from '../constants/theme';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -13,7 +13,14 @@ export default function RootLayout() {
         ? AppDarkTheme
         : AppLightTheme
     }>
-      <Slot />
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack>
     </ThemeProvider>
   );
 }

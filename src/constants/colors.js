@@ -18,13 +18,3 @@ export const COLORS = {
     textSecondary:      '#B0B4BA',
   },
 };
-
-export const AppLightTheme = {
-  ...DefaultTheme,
-  colors: COLORS.LIGHT,
-};
-
-export const AppDarkTheme = {
-  ...DarkTheme,
-  colors: COLORS.DARK,
-};
