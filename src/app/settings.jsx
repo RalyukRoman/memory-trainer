@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, ScrollView }                         from 'react-native';
+
+import AsyncStorage        from '@react-native-async-storage/async-storage';
+import { useThemeContext } from './_layout';
 
 import ThemedText from '../components/ui/themed-text';
 import ThemedView from '../components/ui/themed-view';
@@ -19,6 +21,8 @@ import {
 } from '../constants/game-values';
 
 export default function SettingsPage() {
+  const { loadTheme: loadThemeInApp } = useThemeContext();
+
   const [selectedTheme, setSelectedTheme] = useState(DEFAULT_SETTINGS.theme);
   const [difficulty,    setDifficulty]    = useState(DEFAULT_SETTINGS.difficulty);
   const [config,        setConfig]        = useState(DEFAULT_SETTINGS.config);
@@ -53,6 +57,7 @@ export default function SettingsPage() {
   };
 
   const handleThemeChange = async (newTheme) => {
+    loadThemeInApp(newTheme);
     setSelectedTheme(newTheme);
 
     await AsyncStorage.setItem(

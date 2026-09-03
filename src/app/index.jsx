@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef }    from 'react';
-import { StyleSheet, View }               from 'react-native';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { StyleSheet, View }                         from 'react-native';
+import { SafeAreaView, SafeAreaProvider }           from 'react-native-safe-area-context';
+import { useFocusEffect }                           from 'expo-router';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -13,17 +14,24 @@ import GameTopBar        from '../components/game-page/game-top-bar';
 import ThemedText        from "../components/ui/themed-text";
 import ThemedView        from '../components/ui/themed-view';
 
-import { DIFFICULTY_PRESETS, GAME_PHASES } from '../constants/game-values';
-import { STORAGE_KEYS }                    from '../constants/storage-keys';
-import { SPACING, BORDER_RADIUS }          from '../constants/tokens';
+import { STORAGE_KEYS }           from '../constants/storage-keys';
+import { SPACING, BORDER_RADIUS }   from '../constants/tokens';
+
+import {
+  DIFFICULTY_PRESETS,
+  DEFAULT_SETTINGS,
+  GAME_PHASES,
+} from '../constants/game-values';
 
 export default function GamePage() {
+  const [gameConfig, setGameConfig] = useState(DEFAULT_SETTINGS.config);
+
   const [level,    setLevel]    = useState(1);
   const [sequence, setSequence] = useState([]);
   const [input,    setInput]    = useState('');
   const [phase,    setPhase]    = useState(GAME_PHASES.IDLE);
 
-  const [timeLeft,  setTimeLeft]  = useState(DIFFICULTY_PRESETS.MEDIUM.initialDuration);
+  const [timeLeft,  setTimeLeft]  = useState(DEFAULT_SETTINGS.config.initialDuration);
   const [isCorrect, setIsCorrect] = useState(false);
   const [score,     setScore]     = useState(0);
   const [highScore, setHighScore] = useState(0);
@@ -31,9 +39,12 @@ export default function GamePage() {
   const timerRef = useRef(null);
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    loadHighScore().then();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadHighScore().then();
+      loadGameConfigs().then();
+    }, [])
+  );
 
   useEffect(() => {
     return () => {
@@ -42,6 +53,26 @@ export default function GamePage() {
       }
     };
   }, []);
+
+  const loadGameConfigs = async () => {
+    try {
+      const savedDiff   = await AsyncStorage.getItem(STORAGE_KEYS.SETTINGS.DIFFICULTY);
+      const savedConfig = await AsyncStorage.getItem(STORAGE_KEYS.SETTINGS.CUSTOM_CONFIG);
+
+      const activeDiff = savedDiff || DEFAULT_SETTINGS.difficulty;
+
+      if (activeDiff === 'CUSTOM' && savedConfig) {
+        setGameConfig(JSON.parse(savedConfig));
+      } else if (DIFFICULTY_PRESETS[activeDiff]) {
+        setGameConfig(DIFFICULTY_PRESETS[activeDiff]);
+      } else {
+        setGameConfig(DEFAULT_SETTINGS.config);
+      }
+    }
+    catch (err) {
+      console.error('Error loading game configs:', err);
+    }
+  };
 
   const loadHighScore = async () => {
     try {
@@ -75,8 +106,22 @@ export default function GamePage() {
     }
   };
 
+  const calculateDigitCount = (currentLevel) => {
+    const extraDigits = Math.floor((currentLevel - 1) / gameConfig.levelsPerExtraDigit);
+    const totalDigits = gameConfig.initialDigitCount + extraDigits;
+
+    return Math.min(totalDigits, gameConfig.maxDigitCount);
+  };
+
+  const calculateDuration = (currentLevel) => {
+    const durationReduction = Math.floor((currentLevel - 1) / gameConfig.levelsPerExtraDigit) * 0.25;
+    const currentDuration = gameConfig.initialDuration - durationReduction;
+
+    return Math.max(currentDuration, gameConfig.minDuration);
+  };
+
   const generateSequence = (currentLevel) => {
-    const digitCount = DIFFICULTY_PRESETS.MEDIUM.initialDigitCount + currentLevel;
+    const digitCount = calculateDigitCount(currentLevel);
     let result = [];
 
     for (let i = 0; i < digitCount; i++) {
@@ -96,7 +141,7 @@ export default function GamePage() {
     setSequence(generated);
 
     const startTime = Date.now();
-    const duration = DIFFICULTY_PRESETS.MEDIUM.initialDuration;
+    const duration = calculateDuration(newLevel);
 
     setInput('');
     setTimeLeft(duration);
@@ -142,7 +187,7 @@ export default function GamePage() {
     setPhase(GAME_PHASES.RESULT);
 
     if (isInputCorrect) {
-      const nextScore = score + 1;
+      const nextScore = score + gameConfig.pointsPerLevel;
       const nextLevel = level + 1;
 
       await saveHighScore(nextScore);
