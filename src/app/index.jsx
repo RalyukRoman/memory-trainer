@@ -13,9 +13,9 @@ import GameTopBar        from '../components/game-page/game-top-bar';
 import ThemedText        from "../components/ui/themed-text";
 import ThemedView        from '../components/ui/themed-view';
 
-import { GAME_CONFIG, GAME_PHASES } from '../constants/game-values';
-import { STORAGE_KEYS }             from '../constants/storage-keys';
-import { SPACING, BORDER_RADIUS }   from '../constants/tokens';
+import { DIFFICULTY_PRESETS, GAME_PHASES } from '../constants/game-values';
+import { STORAGE_KEYS }                    from '../constants/storage-keys';
+import { SPACING, BORDER_RADIUS }          from '../constants/tokens';
 
 export default function GamePage() {
   const [level,    setLevel]    = useState(1);
@@ -23,7 +23,7 @@ export default function GamePage() {
   const [input,    setInput]    = useState('');
   const [phase,    setPhase]    = useState(GAME_PHASES.IDLE);
 
-  const [timeLeft,  setTimeLeft]  = useState(GAME_CONFIG.DURATION);
+  const [timeLeft,  setTimeLeft]  = useState(DIFFICULTY_PRESETS.MEDIUM.initialDuration);
   const [isCorrect, setIsCorrect] = useState(false);
   const [score,     setScore]     = useState(0);
   const [highScore, setHighScore] = useState(0);
@@ -76,7 +76,7 @@ export default function GamePage() {
   };
 
   const generateSequence = (currentLevel) => {
-    const digitCount = GAME_CONFIG.BASE_DIGIT_COUNT + currentLevel;
+    const digitCount = DIFFICULTY_PRESETS.MEDIUM.initialDigitCount + currentLevel;
     let result = [];
 
     for (let i = 0; i < digitCount; i++) {
@@ -96,7 +96,7 @@ export default function GamePage() {
     setSequence(generated);
 
     const startTime = Date.now();
-    const duration = GAME_CONFIG.DURATION;
+    const duration = DIFFICULTY_PRESETS.MEDIUM.initialDuration;
 
     setInput('');
     setTimeLeft(duration);

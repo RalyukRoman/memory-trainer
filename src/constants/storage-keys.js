@@ -5,6 +5,7 @@ export const STORAGE_KEYS = {
   },
   SETTINGS: {
     THEME: 'theme',
-    LANGUAGE: 'language',
+    DIFFICULTY: 'difficulty',
+    CUSTOM_CONFIG: 'custom_config',
   },
 };

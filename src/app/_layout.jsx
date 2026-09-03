@@ -24,8 +24,22 @@ export default function RootLayout() {
         <Stack.Screen
           name="stats"
           options={{
-            title: 'Статистика',
-            presentation: 'modal',
+            title: 'Statistics',
+            headerStyle: {
+              backgroundColor: colorScheme === 'dark'
+                ? '#000000'
+                : '#FFFFFF'
+            },
+            headerTintColor: colorScheme === 'dark'
+              ? '#FFFFFF'
+              : '#000000',
+          }}
+        />
+
+        <Stack.Screen
+          name="settings"
+          options={{
+            title: 'Settings',
             headerStyle: {
               backgroundColor: colorScheme === 'dark'
                 ? '#000000'

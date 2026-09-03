@@ -1,6 +1,12 @@
 import { COLORS }        from './colors';
 import { DEFAULT_FONTS } from './fonts';
 
+export const THEMES = {
+  system: 'System',
+  light: 'Light',
+  dark: 'Dark',
+};
+
 export const AppLightTheme = {
   dark: false,
   colors: COLORS.LIGHT,
