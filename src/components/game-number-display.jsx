@@ -1,7 +1,9 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
 
 import { useTheme } from '../hooks/use-theme';
-import ThemedText   from './ui/themed-text';
+
+import ThemedText from './ui/themed-text';
+import ThemedView from './ui/themed-view';
 
 import { GAME_PHASES }            from '../constants/game-values';
 import { SPACING, BORDER_RADIUS } from '../constants/tokens';
@@ -24,22 +26,22 @@ export default function GameNumberDisplay({
         contentContainerStyle={styles.scrollContent}
       >
         {digits.map((digit, index) => (
-          <View
+          <ThemedView
             key={index}
+            variant="selected"
             style={[
               styles.digitBox,
               {
-                backgroundColor: theme.backgroundSelected,
                 borderColor: !canShowNumbers
                   ? theme.textSecondary
-                  : 'transparent',
+                  : 'transparent'
               },
             ]}
           >
             <ThemedText variant="monoDisplay">
               {canShowNumbers ? digit : '?'}
             </ThemedText>
-          </View>
+          </ThemedView>
         ))}
       </ScrollView>
     </View>

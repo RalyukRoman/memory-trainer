@@ -9,11 +9,12 @@ import GameNumberDisplay from '../components/game-number-display';
 import GameTimer         from '../components/game-timer';
 import GameBar           from '../components/game-bar';
 import GameScoreBoard    from '../components/game-score-board';
+
 import ThemedText        from "../components/ui/themed-text";
+import ThemedView        from '../components/ui/themed-view';
 
 import { GAME_CONFIG, GAME_PHASES } from '../constants/game-values';
 import { STORAGE_KEYS }             from '../constants/storage-keys';
-import { FONTS }                    from '../constants/fonts';
 import { SPACING, BORDER_RADIUS }   from '../constants/tokens';
 
 export default function GamePage() {
@@ -155,59 +156,58 @@ export default function GamePage() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={[
-        styles.container,
-        { backgroundColor: theme.background }
-      ]}>
-        <View style={styles.main}>
-          <View style={[
-            styles.card,
-            { backgroundColor: theme.backgroundElement }
-          ]}>
-            <ThemedText variant="headerTitle">
-              MEMORY TRAINER
-            </ThemedText>
+      <ThemedView style={styles.container}>
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.main}>
+            <ThemedView variant="element" style={styles.card}>
+              <ThemedText variant="headerTitle">
+                MEMORY TRAINER
+              </ThemedText>
 
-            <GameNumberDisplay
-              phase={phase}
-              digits={sequence}
-              theme={theme}
-            />
+              <GameNumberDisplay
+                phase={phase}
+                digits={sequence}
+                theme={theme}
+              />
 
-            <GameTimer
-              phase={phase}
-              timeLeft={timeLeft}
-              theme={theme}
-            />
+              <GameTimer
+                phase={phase}
+                timeLeft={timeLeft}
+                theme={theme}
+              />
 
-            <GameBar
-              input={input}
-              setInput={setInput}
-              inputRef={inputRef}
-              phase={phase}
+              <GameBar
+                input={input}
+                setInput={setInput}
+                inputRef={inputRef}
+                phase={phase}
+                theme={theme}
+                isCorrect={isCorrect}
+                onSubmit={handleSubmit}
+                onStartGame={handleStartGame}
+                onNextRound={() => startRound(level)}
+                onRestartGame={handleStartGame}
+              />
+            </ThemedView>
+
+            <GameScoreBoard
+              score={score}
+              level={level}
+              highScore={highScore}
               theme={theme}
-              isCorrect={isCorrect}
-              onSubmit={handleSubmit}
-              onStartGame={handleStartGame}
-              onNextRound={() => startRound(level)}
-              onRestartGame={handleStartGame}
             />
           </View>
-
-          <GameScoreBoard
-            score={score}
-            level={level}
-            highScore={highScore}
-            theme={theme}
-          />
-        </View>
-      </SafeAreaView>
+        </SafeAreaView>
+      </ThemedView>
     </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  safeArea: {
     flex: 1,
   },
   main: {
@@ -223,12 +223,5 @@ const styles = StyleSheet.create({
     gap: SPACING.three,
     padding: SPACING.four,
     borderRadius: BORDER_RADIUS.lg,
-  },
-  headerTitle: {
-    fontFamily: FONTS.sans,
-    fontSize: 14,
-    fontWeight: 'bold',
-    letterSpacing: 2,
-    textTransform: 'uppercase',
   },
 });
