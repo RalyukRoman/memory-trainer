@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { FONTS } from "../constants/fonts";
+import { FONTS }      from "../constants/fonts";
 
 export const styles = StyleSheet.create({
   small: {
@@ -17,6 +17,12 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'normal',
   },
+  header: {
+    fontFamily: FONTS.sans,
+    fontSize: 14,
+    fontWeight: 'bold',
+    letterSpacing: 2,
+  },
   title: {
     fontFamily: FONTS.serif,
     fontSize: 48,
@@ -26,5 +32,20 @@ export const styles = StyleSheet.create({
     fontFamily: FONTS.serif,
     fontSize: 32,
     fontWeight: 'semibold',
+  },
+  monoDisplay: {
+    fontFamily: FONTS.mono,
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  monoInput: {
+    fontFamily: FONTS.mono,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  button: {
+    fontFamily: FONTS.sans,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });

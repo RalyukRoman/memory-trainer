@@ -5,7 +5,7 @@ import { SPACING }          from '../constants/tokens';
 
 export function GameBar({
   input, setInput, inputRef,
-  phase, theme, isCorrect,
+  phase, isCorrect,
   onSubmit, onStartGame,
   onNextRound, onRestartGame,
 }) {
@@ -17,7 +17,6 @@ export function GameBar({
         phase={phase}
         inputRef={inputRef}
         onSubmit={onSubmit}
-        theme={theme}
       />
 
       <GameActionButton
@@ -27,7 +26,6 @@ export function GameBar({
         onStartGame={onStartGame}
         onNextRound={onNextRound}
         onRestartGame={onRestartGame}
-        theme={theme}
       />
     </View>
   );

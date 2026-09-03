@@ -1,4 +1,7 @@
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput } from 'react-native';
+
+import { useTheme } from '../hooks/use-theme';
+import ThemedText   from './ui/themed-text';
 
 import { GAME_PHASES }            from '../constants/game-values';
 import { FONTS }                  from '../constants/fonts';
@@ -6,16 +9,15 @@ import { SPACING, BORDER_RADIUS } from '../constants/tokens';
 
 export function GameInput({
   input, setInput, inputRef,
-  phase, theme, onSubmit
+  phase, onSubmit
 }) {
+  const theme = useTheme();
+
   return (
     <View style={styles.container}>
-      <Text style={[
-        styles.inputLabel,
-        { color: theme.text }
-      ]}>
+      <ThemedText variant="small">
         Enter the numbers:
-      </Text>
+      </ThemedText>
 
       <TextInput
         ref={inputRef}

@@ -1,26 +1,15 @@
-import { StyleSheet, View, Text } from 'react-native';
-
-import { styles as typography } from '../styles/typography';
-import { SPACING }              from '../constants/tokens';
+import { StyleSheet, View } from 'react-native';
+import { SPACING }          from '../constants/tokens';
+import ThemedText           from "./ui/themed-text";
 
 export function GameScoreBoard({
-  score, level, highScore, theme
+  score, level, highScore
 }) {
-  const textColor = { color: theme.text };
-
   return (
     <View style={styles.statsContainer}>
-      <Text style={[typography.small, textColor]}>
-        Current Score: {score}
-      </Text>
-
-      <Text style={[typography.small, textColor]}>
-        Level: {level}
-      </Text>
-
-      <Text style={[typography.smallBold, textColor]}>
-        Best Score: {highScore}
-      </Text>
+      <ThemedText variant="small">    Current Score: {score} </ThemedText>
+      <ThemedText variant="small">    Level: {level}         </ThemedText>
+      <ThemedText variant="smallBold">Best Score: {highScore}</ThemedText>
     </View>
   );
 }

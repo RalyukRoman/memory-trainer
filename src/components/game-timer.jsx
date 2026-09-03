@@ -1,8 +1,9 @@
-import { StyleSheet, Text } from 'react-native';
-import { GAME_PHASES }      from '../constants/game-values';
+import { StyleSheet }  from 'react-native';
+import { GAME_PHASES } from '../constants/game-values';
+import ThemedText      from "./ui/themed-text";
 
 export function GameTimer({
-  phase, timeLeft, theme,
+  phase, timeLeft
 }) {
   const isShowed = phase === GAME_PHASES.SHOW;
 
@@ -11,12 +12,12 @@ export function GameTimer({
     : 'Hidden'
 
   return (
-    <Text style={[
-      styles.timerText,
-      { color: theme.text }
-    ]}>
+    <ThemedText
+      variant="small"
+      style={styles.timerText}
+    >
       {timeText}
-    </Text>
+    </ThemedText>
   );
 }
 

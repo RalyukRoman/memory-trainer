@@ -1,14 +1,18 @@
-import { StyleSheet, Pressable, Text } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 
-import { GAME_PHASES } from '../constants/game-values';
-import { FONTS }       from '../constants/fonts';
-import { SPACING }     from '../constants/tokens';
+import { useTheme } from '../hooks/use-theme';
+import ThemedText   from "./ui/themed-text";
+
+import { GAME_PHASES }            from '../constants/game-values';
+import { SPACING, BORDER_RADIUS } from '../constants/tokens';
 
 export function GameActionButton({
-  phase, isCorrect, theme,
+  phase, isCorrect,
   onSubmit, onStartGame,
   onNextRound, onRestartGame
 }) {
+  const theme = useTheme();
+
   const getButtonConfig = () => {
     if (phase === GAME_PHASES.IDLE) {
       return {
@@ -64,12 +68,12 @@ export function GameActionButton({
       ]}
       onPress={onPress}
     >
-      <Text style={[
-        styles.buttonText,
-        { color: theme.background }
-      ]}>
+      <ThemedText
+        variant="button"
+        colorVariant="inverse"
+      >
         {text}
-      </Text>
+      </ThemedText>
     </Pressable>
   );
 }
@@ -81,14 +85,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: SPACING.two,
-    borderRadius: SPACING.two,
-  },
-  buttonText: {
-    fontFamily: FONTS.sans,
-    fontWeight: 'bold',
-    letterSpacing: 1.5,
+    borderRadius: BORDER_RADIUS.sm,
   },
   buttonPressed: {
     opacity: 0.8,
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
 });

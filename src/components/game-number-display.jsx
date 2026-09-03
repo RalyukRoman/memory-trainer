@@ -1,12 +1,16 @@
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
+
+import { useTheme } from '../hooks/use-theme';
+import ThemedText   from './ui/themed-text';
 
 import { GAME_PHASES }            from '../constants/game-values';
-import { FONTS }                  from '../constants/fonts';
 import { SPACING, BORDER_RADIUS } from '../constants/tokens';
 
 export function GameNumberDisplay({
-   phase, digits, theme,
+   phase, digits
 }) {
+  const theme = useTheme();
+
   const canShowNumbers =
     phase === GAME_PHASES.SHOW ||
     phase === GAME_PHASES.RESULT;
@@ -32,14 +36,9 @@ export function GameNumberDisplay({
               },
             ]}
           >
-            <Text
-              style={[
-                styles.digitText,
-                { color: theme.text },
-              ]}
-            >
+            <ThemedText variant="monoDisplay">
               {canShowNumbers ? digit : '?'}
-            </Text>
+            </ThemedText>
           </View>
         ))}
       </ScrollView>
@@ -72,10 +71,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: BORDER_RADIUS.md,
-  },
-  digitText: {
-    fontFamily: FONTS.mono,
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
+  }
 });

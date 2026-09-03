@@ -1,14 +1,15 @@
 import { useState, useEffect, useRef }    from 'react';
-import { StyleSheet, View, Text }         from 'react-native';
+import { StyleSheet, View }               from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import AsyncStorage                       from '@react-native-async-storage/async-storage';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../hooks/use-theme';
 
 import { GameNumberDisplay } from '../components/game-number-display';
 import { GameTimer }         from '../components/game-timer';
 import { GameBar }           from '../components/game-bar';
 import { GameScoreBoard }    from '../components/game-score-board';
+import ThemedText        from "../components/ui/themed-text";
 
 import { GAME_CONFIG, GAME_PHASES } from '../constants/game-values';
 import { STORAGE_KEYS }             from '../constants/storage-keys';
@@ -18,10 +19,10 @@ import { SPACING, BORDER_RADIUS }   from '../constants/tokens';
 export default function GamePage() {
   const theme = useTheme();
 
-  const [level,    setLevel]  = useState(1);
+  const [level,    setLevel]    = useState(1);
   const [sequence, setSequence] = useState([]);
-  const [input,    setInput]  = useState('');
-  const [phase,    setPhase]  = useState(GAME_PHASES.IDLE);
+  const [input,    setInput]    = useState('');
+  const [phase,    setPhase]    = useState(GAME_PHASES.IDLE);
 
   const [timeLeft,  setTimeLeft]  = useState(GAME_CONFIG.DURATION);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -163,12 +164,9 @@ export default function GamePage() {
             styles.card,
             { backgroundColor: theme.backgroundElement }
           ]}>
-            <Text style={[
-              styles.headerTitle,
-              { color: theme.text }
-            ]}>
+            <ThemedText variant="headerTitle">
               MEMORY TRAINER
-            </Text>
+            </ThemedText>
 
             <GameNumberDisplay
               phase={phase}
