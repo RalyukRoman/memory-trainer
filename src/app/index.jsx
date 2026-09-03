@@ -3,7 +3,6 @@ import { StyleSheet, View }               from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme } from '../hooks/use-theme';
 
 import GameNumberDisplay from '../components/game-number-display';
 import GameTimer         from '../components/game-timer';
@@ -18,8 +17,6 @@ import { STORAGE_KEYS }             from '../constants/storage-keys';
 import { SPACING, BORDER_RADIUS }   from '../constants/tokens';
 
 export default function GamePage() {
-  const theme = useTheme();
-
   const [level,    setLevel]    = useState(1);
   const [sequence, setSequence] = useState([]);
   const [input,    setInput]    = useState('');
@@ -167,13 +164,11 @@ export default function GamePage() {
               <GameNumberDisplay
                 phase={phase}
                 digits={sequence}
-                theme={theme}
               />
 
               <GameTimer
                 phase={phase}
                 timeLeft={timeLeft}
-                theme={theme}
               />
 
               <GameBar
@@ -181,7 +176,6 @@ export default function GamePage() {
                 setInput={setInput}
                 inputRef={inputRef}
                 phase={phase}
-                theme={theme}
                 isCorrect={isCorrect}
                 onSubmit={handleSubmit}
                 onStartGame={handleStartGame}
@@ -194,7 +188,6 @@ export default function GamePage() {
               score={score}
               level={level}
               highScore={highScore}
-              theme={theme}
             />
           </View>
         </SafeAreaView>
