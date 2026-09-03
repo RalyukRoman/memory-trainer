@@ -4,11 +4,11 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import GameNumberDisplay from '../components/game-number-display';
-import GameInfo          from '../components/game-info';
-import GameBar           from '../components/game-bar';
-import GameScoreBoard    from '../components/game-score-board';
-import GameTopBar        from '../components/game-top-bar';
+import GameNumberDisplay from '../components/game-page/game-number-display';
+import GameInfo          from '../components/game-page/game-info';
+import GameBar           from '../components/game-page/game-bar';
+import GameScoreBoard    from '../components/game-page/game-score-board';
+import GameTopBar        from '../components/game-page/game-top-bar';
 
 import ThemedText        from "../components/ui/themed-text";
 import ThemedView        from '../components/ui/themed-view';

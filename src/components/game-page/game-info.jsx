@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import GameStatus from './game-status';
 import GameTimer  from './game-timer';
 
-import { SPACING } from '../constants/tokens';
+import { SPACING } from '../../constants/tokens';
 
 export default function GameInfo({
   phase, timeLeft, isCorrect

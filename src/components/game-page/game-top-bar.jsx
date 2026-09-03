@@ -2,15 +2,15 @@ import { StyleSheet, View, Pressable } from 'react-native';
 import { Link }                        from 'expo-router';
 import { Ionicons }                    from '@expo/vector-icons';
 
-import { useTheme } from '../hooks/use-theme';
-import { SPACING }  from '../constants/tokens';
+import { useTheme } from '../../hooks/use-theme';
+import { SPACING }  from '../../constants/tokens';
 
 export default function GameTopBar() {
   const theme = useTheme();
 
   return (
     <View style={styles.container}>
-      <Link href="/stats" asChild>
+      <Link href="/settings" asChild>
         <Pressable style={styles.button}>
           <Ionicons
             name="settings-outline"

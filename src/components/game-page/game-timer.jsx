@@ -1,5 +1,5 @@
-import ThemedText      from './ui/themed-text';
-import { GAME_PHASES } from '../constants/game-values';
+import ThemedText      from '../ui/themed-text';
+import { GAME_PHASES } from '../../constants/game-values';
 
 export default function GameTimer({
   phase, timeLeft

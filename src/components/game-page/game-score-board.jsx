@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 
-import ThemedText from './ui/themed-text';
-import ThemedView from './ui/themed-view';
+import ThemedText from '../ui/themed-text';
+import ThemedView from '../ui/themed-view';
 
-import { SPACING, BORDER_RADIUS } from '../constants/tokens';
+import { SPACING, BORDER_RADIUS } from '../../constants/tokens';
 
 export default function GameScoreBoard({
   score, level, highScore
