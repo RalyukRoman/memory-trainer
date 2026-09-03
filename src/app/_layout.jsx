@@ -20,6 +20,22 @@ export default function RootLayout() {
             headerShown: false,
           }}
         />
+
+        <Stack.Screen
+          name="stats"
+          options={{
+            title: 'Статистика',
+            presentation: 'modal',
+            headerStyle: {
+              backgroundColor: colorScheme === 'dark'
+                ? '#000000'
+                : '#FFFFFF'
+            },
+            headerTintColor: colorScheme === 'dark'
+              ? '#FFFFFF'
+              : '#000000',
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );
