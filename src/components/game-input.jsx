@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native';
 
-import ThemedText  from './ui/themed-text';
 import ThemedInput from './ui/themed-input';
 
 import { GAME_PHASES } from '../constants/game-values';
@@ -12,10 +11,6 @@ export default function GameInput({
 }) {
   return (
     <View style={styles.container}>
-      <ThemedText variant="small">
-        Enter the numbers:
-      </ThemedText>
-
       <ThemedInput
         ref={inputRef}
         keyboardType="number-pad"
@@ -31,6 +26,7 @@ export default function GameInput({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    alignItems: 'center',
     gap: SPACING.two,
   },
 });

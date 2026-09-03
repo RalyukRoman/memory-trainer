@@ -1,32 +1,18 @@
-const DEFAULT_LIGHT_COLORS = {
-  primary:      '#007AFF',
-  card:         '#FFFFFF',
-  border:       '#CCCCCC',
-  notification: '#FF3B30',
-};
-
-const DEFAULT_DARK_COLORS = {
-  primary:      '#0A84FF',
-  card:         '#121212',
-  border:       '#272729',
-  notification: '#FF453A',
-};
-
 export const COLORS = {
   LIGHT: {
-    ...DEFAULT_LIGHT_COLORS,
+    border:             '#CCCCCC',
     text:               '#000000',
+    textSecondary:      '#60646C',
     background:         '#FFFFFF',
     backgroundElement:  '#F0F0F0',
     backgroundSelected: '#E0E1E6',
-    textSecondary:      '#60646C',
   },
   DARK: {
-    ...DEFAULT_DARK_COLORS,
+    border:             '#272729',
     text:               '#FFFFFF',
+    textSecondary:      '#B0B4BA',
     background:         '#000000',
     backgroundElement:  '#212225',
     backgroundSelected: '#2E3135',
-    textSecondary:      '#B0B4BA',
   },
 };

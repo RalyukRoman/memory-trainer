@@ -5,9 +5,10 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import GameNumberDisplay from '../components/game-number-display';
-import GameTimer         from '../components/game-timer';
+import GameInfo          from '../components/game-info';
 import GameBar           from '../components/game-bar';
 import GameScoreBoard    from '../components/game-score-board';
+import GameTopBar        from '../components/game-top-bar';
 
 import ThemedText        from "../components/ui/themed-text";
 import ThemedView        from '../components/ui/themed-view';
@@ -155,9 +156,11 @@ export default function GamePage() {
     <SafeAreaProvider>
       <ThemedView style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
+          <GameTopBar />
+
           <View style={styles.main}>
             <ThemedView variant="element" style={styles.card}>
-              <ThemedText variant="headerTitle">
+              <ThemedText variant="header">
                 MEMORY TRAINER
               </ThemedText>
 
@@ -166,9 +169,10 @@ export default function GamePage() {
                 digits={sequence}
               />
 
-              <GameTimer
+              <GameInfo
                 phase={phase}
                 timeLeft={timeLeft}
+                isCorrect={isCorrect}
               />
 
               <GameBar

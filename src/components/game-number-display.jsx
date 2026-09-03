@@ -30,7 +30,7 @@ export default function GameNumberDisplay({
             key={index}
             variant="selected"
             style={[
-              styles.digitBox,
+              styles.box,
               {
                 borderColor: !canShowNumbers
                   ? theme.textSecondary
@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.two,
     paddingHorizontal: SPACING.one,
   },
-  digitBox: {
+  box: {
     width: 42,
     height: 52,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: BORDER_RADIUS.md,
+    borderRadius: BORDER_RADIUS.xs,
   }
 });

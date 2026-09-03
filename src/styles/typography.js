@@ -1,27 +1,37 @@
 import { StyleSheet }   from "react-native";
 import { FONTS_FAMILY } from "../constants/fonts";
 
-export const styles = StyleSheet.create({
-  small: {
+export const typography = StyleSheet.create({
+  caption: {
     fontFamily: FONTS_FAMILY.sans,
     fontSize: 14,
     fontWeight: 'normal',
   },
-  smallBold: {
+  captionBold: {
     fontFamily: FONTS_FAMILY.sans,
     fontSize: 14,
     fontWeight: 'bold',
   },
-  default: {
+  body: {
     fontFamily: FONTS_FAMILY.sans,
     fontSize: 16,
     fontWeight: 'normal',
   },
+  bodyBold: {
+    fontFamily: FONTS_FAMILY.sans,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  button: {
+    fontFamily: FONTS_FAMILY.sans,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   header: {
     fontFamily: FONTS_FAMILY.sans,
-    fontSize: 14,
+    fontSize: 22,
     fontWeight: 'bold',
-    letterSpacing: 2,
+    letterSpacing: 3,
   },
   title: {
     fontFamily: FONTS_FAMILY.serif,
@@ -33,19 +43,19 @@ export const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'semibold',
   },
+  monoValue: {
+    fontFamily: FONTS_FAMILY.mono,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   monoDisplay: {
     fontFamily: FONTS_FAMILY.mono,
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
   },
   monoInput: {
     fontFamily: FONTS_FAMILY.mono,
     fontSize: 18,
     textAlign: 'center',
-  },
-  button: {
-    fontFamily: FONTS_FAMILY.sans,
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 });

@@ -62,12 +62,12 @@ export default function StatsPage() {
     <ThemedView style={styles.container}>
       <View style={styles.content}>
         <ThemedView variant="element" style={styles.card}>
-          <ThemedText variant="headerTitle" style={styles.title}>
+          <ThemedText variant="header" style={styles.title}>
             СТАТИСТИКА
           </ThemedText>
 
           <View style={styles.statRow}>
-            <ThemedText variant="default">Найкращий результат:</ThemedText>
+            <ThemedText variant="body">Найкращий результат:</ThemedText>
             <ThemedText variant="monoDisplay">{highScore}</ThemedText>
           </View>
 

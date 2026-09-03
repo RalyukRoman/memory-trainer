@@ -1,9 +1,9 @@
-import { Text }                 from 'react-native';
-import { useTheme }             from '../../hooks/use-theme';
-import { styles as typography } from '../../styles/typography';
+import { Text }       from 'react-native';
+import { useTheme }   from '../../hooks/use-theme';
+import { typography } from '../../styles/typography';
 
 export default function ThemedText({
-  variant = 'default',
+  variant = 'body',
   colorVariant = 'primary',
   style,
   children,

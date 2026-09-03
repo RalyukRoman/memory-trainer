@@ -1,29 +1,16 @@
-import { StyleSheet }  from 'react-native';
+import ThemedText      from './ui/themed-text';
 import { GAME_PHASES } from '../constants/game-values';
-import ThemedText      from "./ui/themed-text";
 
 export default function GameTimer({
   phase, timeLeft
 }) {
-  const isShowed = phase === GAME_PHASES.SHOW;
-
-  const timeText = isShowed
-    ? `${timeLeft.toFixed(2)}s`
-    : 'Hidden'
+  if (phase !== GAME_PHASES.SHOW) {
+    return null;
+  }
 
   return (
-    <ThemedText
-      variant="small"
-      style={styles.timerText}
-    >
-      {timeText}
+    <ThemedText variant="monoValue">
+      {timeLeft.toFixed(2)}s
     </ThemedText>
   );
 }
-
-const styles = StyleSheet.create({
-  timerText: {
-    opacity: 0.8,
-    fontSize: 14,
-  },
-});
