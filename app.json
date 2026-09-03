@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "memory-trainer",
+    "name": "Memory Trainer",
     "slug": "memory-trainer",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,7 +12,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/android-icon.png"
+        "foregroundImage": "./assets/images/android-icon.png",
+        "backgroundColor": "#121212"
       },
       "predictiveBackGestureEnabled": false
     },
@@ -25,9 +26,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#FFFFFF",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 120
         }
       ]
     ],
