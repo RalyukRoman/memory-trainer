@@ -6,7 +6,7 @@ import ThemedText   from "./ui/themed-text";
 import { GAME_PHASES }            from '../constants/game-values';
 import { SPACING, BORDER_RADIUS } from '../constants/tokens';
 
-export function GameActionButton({
+export default function GameActionButton({
   phase, isCorrect,
   onSubmit, onStartGame,
   onNextRound, onRestartGame

@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { SPACING }          from '../constants/tokens';
 import ThemedText           from "./ui/themed-text";
 
-export function GameScoreBoard({
+export default function GameScoreBoard({
   score, level, highScore
 }) {
   return (

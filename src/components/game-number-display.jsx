@@ -6,7 +6,7 @@ import ThemedText   from './ui/themed-text';
 import { GAME_PHASES }            from '../constants/game-values';
 import { SPACING, BORDER_RADIUS } from '../constants/tokens';
 
-export function GameNumberDisplay({
+export default function GameNumberDisplay({
    phase, digits
 }) {
   const theme = useTheme();

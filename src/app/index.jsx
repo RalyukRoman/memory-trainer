@@ -5,10 +5,10 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../hooks/use-theme';
 
-import { GameNumberDisplay } from '../components/game-number-display';
-import { GameTimer }         from '../components/game-timer';
-import { GameBar }           from '../components/game-bar';
-import { GameScoreBoard }    from '../components/game-score-board';
+import GameNumberDisplay from '../components/game-number-display';
+import GameTimer         from '../components/game-timer';
+import GameBar           from '../components/game-bar';
+import GameScoreBoard    from '../components/game-score-board';
 import ThemedText        from "../components/ui/themed-text";
 
 import { GAME_CONFIG, GAME_PHASES } from '../constants/game-values';

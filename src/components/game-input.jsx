@@ -7,7 +7,7 @@ import { GAME_PHASES }            from '../constants/game-values';
 import { FONTS }                  from '../constants/fonts';
 import { SPACING, BORDER_RADIUS } from '../constants/tokens';
 
-export function GameInput({
+export default function GameInput({
   input, setInput, inputRef,
   phase, onSubmit
 }) {
