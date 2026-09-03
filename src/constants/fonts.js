@@ -1,7 +1,26 @@
-import '@/global.css';
+import '../global.css';
 import { Platform } from "react-native";
 
-export const FONTS = Platform.select({
+export const DEFAULT_FONTS = {
+  regular: {
+    fontFamily: 'System',
+    fontWeight: '400',
+  },
+  medium: {
+    fontFamily: 'System',
+    fontWeight: '500',
+  },
+  bold: {
+    fontFamily: 'System',
+    fontWeight: '700',
+  },
+  heavy: {
+    fontFamily: 'System',
+    fontWeight: '800',
+  },
+};
+
+export const FONTS_FAMILY = Platform.select({
   ios: {
     sans:    'system-ui',
     serif:   'ui-serif',

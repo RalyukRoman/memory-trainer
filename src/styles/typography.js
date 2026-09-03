@@ -1,50 +1,50 @@
-import { StyleSheet } from "react-native";
-import { FONTS }      from "../constants/fonts";
+import { StyleSheet }   from "react-native";
+import { FONTS_FAMILY } from "../constants/fonts";
 
 export const styles = StyleSheet.create({
   small: {
-    fontFamily: FONTS.sans,
+    fontFamily: FONTS_FAMILY.sans,
     fontSize: 14,
     fontWeight: 'normal',
   },
   smallBold: {
-    fontFamily: FONTS.sans,
+    fontFamily: FONTS_FAMILY.sans,
     fontSize: 14,
     fontWeight: 'bold',
   },
   default: {
-    fontFamily: FONTS.sans,
+    fontFamily: FONTS_FAMILY.sans,
     fontSize: 16,
     fontWeight: 'normal',
   },
   header: {
-    fontFamily: FONTS.sans,
+    fontFamily: FONTS_FAMILY.sans,
     fontSize: 14,
     fontWeight: 'bold',
     letterSpacing: 2,
   },
   title: {
-    fontFamily: FONTS.serif,
+    fontFamily: FONTS_FAMILY.serif,
     fontSize: 48,
     fontWeight: 'semibold',
   },
   subtitle: {
-    fontFamily: FONTS.serif,
+    fontFamily: FONTS_FAMILY.serif,
     fontSize: 32,
     fontWeight: 'semibold',
   },
   monoDisplay: {
-    fontFamily: FONTS.mono,
+    fontFamily: FONTS_FAMILY.mono,
     fontSize: 24,
     fontWeight: 'bold',
   },
   monoInput: {
-    fontFamily: FONTS.mono,
+    fontFamily: FONTS_FAMILY.mono,
     fontSize: 18,
     textAlign: 'center',
   },
   button: {
-    fontFamily: FONTS.sans,
+    fontFamily: FONTS_FAMILY.sans,
     fontSize: 18,
     fontWeight: 'bold',
   },

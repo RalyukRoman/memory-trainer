@@ -1,4 +1,4 @@
-import { useTheme as useNavTheme } from '@react-navigation/native';
+import { useTheme as useNavTheme } from 'expo-router';
 
 export function useTheme() {
   const theme = useNavTheme();

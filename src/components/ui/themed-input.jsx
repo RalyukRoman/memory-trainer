@@ -2,7 +2,7 @@ import { StyleSheet, TextInput } from 'react-native';
 
 import { useTheme } from '../../hooks/use-theme';
 
-import { FONTS }                  from '../../constants/fonts';
+import { Fonts }                  from '../../constants/fonts';
 import { BORDER_RADIUS, SPACING } from '../../constants/tokens';
 
 export default function ThemedInput({
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.three,
     borderWidth: 1,
     borderRadius: BORDER_RADIUS.sm,
-    fontFamily: FONTS.mono,
+    fontFamily: Fonts.mono,
     fontSize: 18,
     letterSpacing: 4,
     textAlign: 'center',

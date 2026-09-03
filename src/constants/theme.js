@@ -1,18 +1,14 @@
-import { DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { COLORS } from './colors';
+import { COLORS }        from './colors';
+import { DEFAULT_FONTS } from './fonts';
 
 export const AppLightTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    ...COLORS.LIGHT,
-  },
+  dark: false,
+  colors: COLORS.LIGHT,
+  fonts: DEFAULT_FONTS
 };
 
 export const AppDarkTheme = {
-  ...DarkTheme,
-  colors: {
-    ...DarkTheme.colors,
-    ...COLORS.DARK,
-  },
+  dark: true,
+  colors: COLORS.DARK,
+  fonts: DEFAULT_FONTS
 };
