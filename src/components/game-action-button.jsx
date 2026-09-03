@@ -14,44 +14,20 @@ export default function GameActionButton({
   const theme = useTheme();
 
   const getButtonConfig = () => {
-    if (phase === GAME_PHASES.IDLE) {
-      return {
-        disabled: false,
-        text: 'START GAME',
-        onPress: onStartGame,
-      };
-    }
+    switch (phase) {
+      case GAME_PHASES.IDLE:
+        return {disabled: false, text: 'START GAME', onPress: onStartGame};
 
-    if (phase === GAME_PHASES.SHOW) {
-      return {
-        disabled: true,
-        text: 'MEMORIZE...',
-        onPress: null,
-      };
-    }
+      case GAME_PHASES.SHOW:
+        return {disabled: true, text: 'MEMORIZE...', onPress: null};
 
-    if (phase === GAME_PHASES.INPUT) {
-      return {
-        disabled: false,
-        text: 'SUBMIT',
-        onPress: onSubmit,
-      };
-    }
+      case GAME_PHASES.INPUT:
+        return {disabled: false, text: 'SUBMIT', onPress: onSubmit};
 
-    if (phase === GAME_PHASES.RESULT) {
-      if (isCorrect) {
-        return {
-          disabled: false,
-          text: 'NEXT LEVEL',
-          onPress: onNextRound,
-        };
-      } else {
-        return {
-          disabled: false,
-          text: 'TRY AGAIN',
-          onPress: onRestartGame,
-        };
-      }
+      case GAME_PHASES.RESULT:
+        return isCorrect
+          ? {disabled: false, text: 'NEXT LEVEL', onPress: onNextRound}
+          : {disabled: false, text: 'TRY AGAIN',  onPress: onRestartGame};
     }
   };
 
