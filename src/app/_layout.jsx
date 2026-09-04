@@ -78,4 +78,6 @@ export default function RootLayout() {
   );
 }
 
-export const useThemeContext = () => useContext(ThemeContext);
+export const useThemeContext = () => (
+  useContext(ThemeContext)
+);
