@@ -25,6 +25,7 @@ import {
 
 export default function GamePage() {
   const [gameConfig, setGameConfig] = useState(DEFAULT_SETTINGS.config);
+  const [difficulty, setDifficulty] = useState(DEFAULT_SETTINGS.difficulty);
 
   const [level,    setLevel]    = useState(1);
   const [sequence, setSequence] = useState([]);
@@ -60,6 +61,22 @@ export default function GamePage() {
       const savedConfig = await AsyncStorage.getItem(STORAGE_KEYS.SETTINGS.CUSTOM_CONFIG);
 
       const activeDiff = savedDiff || DEFAULT_SETTINGS.difficulty;
+
+      console.log('as')
+
+      if (activeDiff !== difficulty     &&
+          phase !== GAME_PHASES.IDLE    &&
+          phase !== GAME_PHASES.RESULT  &&
+          phase !== GAME_PHASES.STOPPED
+      ){
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+        }
+
+        setPhase(GAME_PHASES.STOPPED);
+      }
+
+      setDifficulty(difficulty);
 
       if (activeDiff === 'CUSTOM' && savedConfig) {
         setGameConfig(JSON.parse(savedConfig));
@@ -107,17 +124,34 @@ export default function GamePage() {
   };
 
   const calculateDigitCount = (currentLevel) => {
-    const extraDigits = Math.floor((currentLevel - 1) / gameConfig.levelsPerExtraDigit);
-    const totalDigits = gameConfig.initialDigitCount + extraDigits;
+    const extraDigits =
+      Math.floor((currentLevel - 1)
+        / gameConfig.levelsPerExtraDigit);
 
-    return Math.min(totalDigits, gameConfig.maxDigitCount);
+    const totalDigits =
+      gameConfig.initialDigitCount
+        + extraDigits;
+
+    return Math.min(
+      totalDigits,
+      gameConfig.maxDigitCount
+    );
   };
 
   const calculateDuration = (currentLevel) => {
-    const durationReduction = Math.floor((currentLevel - 1) / gameConfig.levelsPerExtraDigit) * 0.25;
-    const currentDuration = gameConfig.initialDuration - durationReduction;
+    const durationReduction =
+      Math.floor((currentLevel - 1)
+        / gameConfig.levelsPerExtraDigit)
+        * 0.25;
 
-    return Math.max(currentDuration, gameConfig.minDuration);
+    const currentDuration =
+      gameConfig.initialDuration
+        - durationReduction;
+
+    return Math.max(
+      currentDuration,
+      gameConfig.minDuration
+    );
   };
 
   const generateSequence = (currentLevel) => {

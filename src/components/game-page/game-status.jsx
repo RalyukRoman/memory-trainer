@@ -17,6 +17,9 @@ export default function GameStatus({
           ? { text: 'Correct!', color: '#60b628' }
           : { text: 'Wrong!',   color: '#e13b3b' };
 
+      case GAME_PHASES.STOPPED:
+        return { text: 'Game stopped', color: '#b57a37' };
+
       default:
         return { text: null, color: null };
     }

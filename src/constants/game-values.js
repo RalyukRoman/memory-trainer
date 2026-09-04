@@ -1,8 +1,9 @@
 export const GAME_PHASES = {
-  IDLE:   'IDLE',
-  SHOW:   'SHOW',
-  INPUT:  'INPUT',
-  RESULT: 'RESULT',
+  IDLE:    'IDLE',
+  SHOW:    'SHOW',
+  INPUT:   'INPUT',
+  RESULT:  'RESULT',
+  STOPPED: 'STOPPED',
 };
 
 export const DIFFICULTIES = {

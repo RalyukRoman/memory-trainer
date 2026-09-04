@@ -28,6 +28,9 @@ export default function GameActionButton({
         return isCorrect
           ? {disabled: false, text: 'NEXT LEVEL', onPress: onNextRound}
           : {disabled: false, text: 'TRY AGAIN',  onPress: onRestartGame};
+
+      case GAME_PHASES.STOPPED:
+        return {disabled: false, text: 'RESTART', onPress: onRestartGame};
     }
   };
 

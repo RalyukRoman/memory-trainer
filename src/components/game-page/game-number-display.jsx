@@ -16,6 +16,13 @@ export default function GameNumberDisplay({
     phase === GAME_PHASES.SHOW ||
     phase === GAME_PHASES.RESULT;
 
+  if (
+    phase === GAME_PHASES.IDLE ||
+    phase === GAME_PHASES.STOPPED
+  ){
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView
