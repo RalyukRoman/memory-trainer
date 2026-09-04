@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import ThemedText      from '../ui/themed-text';
 import ThemedView      from '../ui/themed-view';
-import SettingInputRow from './setting-input-row';
+import SettingsInputRow from './settings-input-row';
 
 import { SPACING, BORDER_RADIUS } from '../../constants/tokens';
 
@@ -15,7 +15,7 @@ const CONFIGS_FIELDS = [
   { key: 'minDuration',         label: 'Min. display duration (sec)', keyboardType: 'numeric' },
 ];
 
-export default function GameConfigs({
+export default function SettingsConfigs({
   config,
   isCustom,
   onChangeConfig,
@@ -38,7 +38,7 @@ export default function GameConfigs({
       {CONFIGS_FIELDS.map(({
         key, label, keyboardType
       }) => (
-        <SettingInputRow
+        <SettingsInputRow
           key={key}
           label={`${label}:`}
           value={config[key]}

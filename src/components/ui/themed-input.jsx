@@ -1,6 +1,5 @@
 import { StyleSheet, TextInput } from 'react-native';
-
-import { useTheme } from '../../hooks/use-theme';
+import { useTheme }              from 'expo-router';
 
 import { FONTS_FAMILY }           from '../../constants/fonts';
 import { BORDER_RADIUS, SPACING } from '../../constants/tokens';
@@ -16,13 +15,13 @@ export default function ThemedInput({
       style={[
         styles.input,
         {
-          color: theme.text,
-          backgroundColor: theme.background,
-          borderColor: theme.textSecondary,
+          color: theme.colors.text,
+          backgroundColor: theme.colors.background,
+          borderColor: theme.colors.textSecondary,
         },
         style,
       ]}
-      placeholderTextColor={theme.textSecondary}
+      placeholderTextColor={theme.colors.textSecondary}
       {...props}
     />
   );

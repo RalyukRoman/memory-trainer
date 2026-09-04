@@ -1,6 +1,5 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
-
-import { useTheme } from '../../hooks/use-theme';
+import { useTheme }                     from 'expo-router';
 
 import ThemedText from '../ui/themed-text';
 import ThemedView from '../ui/themed-view';
@@ -33,7 +32,7 @@ export default function GameNumberDisplay({
               styles.box,
               {
                 borderColor: !canShowNumbers
-                  ? theme.textSecondary
+                  ? theme.colors.textSecondary
                   : 'transparent'
               },
             ]}

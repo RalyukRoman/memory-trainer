@@ -1,6 +1,6 @@
 import { StyleSheet, Pressable } from 'react-native';
+import { useTheme }              from 'expo-router';
 
-import { useTheme } from '../../hooks/use-theme';
 import ThemedText   from "../ui/themed-text";
 
 import { GAME_PHASES }            from '../../constants/game-values';
@@ -38,7 +38,7 @@ export default function GameActionButton({
       disabled={disabled}
       style={({ pressed }) => [
         styles.button,
-        { backgroundColor: theme.text },
+        { backgroundColor: theme.colors.text },
         disabled && styles.buttonDisabled,
         pressed  && styles.buttonPressed,
       ]}

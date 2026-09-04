@@ -8,7 +8,7 @@ import ThemedText from '../components/ui/themed-text';
 import ThemedView from '../components/ui/themed-view';
 
 import SettingsSelector from '../components/setting-page/settings-selector';
-import GameConfigs      from '../components/setting-page/game-configs';
+import SettingsConfigs      from '../components/setting-page/settings-configs';
 
 import { THEMES }       from '../constants/theme';
 import { STORAGE_KEYS } from '../constants/storage-keys';
@@ -57,13 +57,14 @@ export default function SettingsPage() {
   };
 
   const handleThemeChange = async (newTheme) => {
-    loadThemeInApp(newTheme);
     setSelectedTheme(newTheme);
 
     await AsyncStorage.setItem(
       STORAGE_KEYS.SETTINGS.THEME,
       newTheme
     );
+
+    loadThemeInApp();
   };
 
   const handleDifficultyChange = async (newDiff) => {
@@ -133,7 +134,7 @@ export default function SettingsPage() {
           onSelect={handleDifficultyChange}
         />
 
-        <GameConfigs
+        <SettingsConfigs
           config={config}
           isCustom={isCustom}
           onChangeConfig={handleConfigChange}

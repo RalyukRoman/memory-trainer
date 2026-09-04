@@ -1,5 +1,5 @@
 import { Text }       from 'react-native';
-import { useTheme }   from '../../hooks/use-theme';
+import { useTheme }   from 'expo-router';
 import { typography } from '../../styles/typography';
 
 export default function ThemedText({
@@ -14,11 +14,11 @@ export default function ThemedText({
   const getColor = () => {
     switch (colorVariant) {
       case 'secondary':
-        return theme.textSecondary;
+        return theme.colors.textSecondary;
       case 'inverse':
-        return theme.background;
+        return theme.colors.background;
       default:
-        return theme.text;
+        return theme.colors.text;
     }
   };
 

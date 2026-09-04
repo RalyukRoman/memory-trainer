@@ -1,5 +1,5 @@
 import { View }     from 'react-native';
-import { useTheme } from '../../hooks/use-theme';
+import { useTheme } from 'expo-router';
 
 export default function ThemedView({
   variant = 'default',
@@ -12,11 +12,11 @@ export default function ThemedView({
   const getBackgroundColor = () => {
     switch (variant) {
       case 'element':
-        return theme.backgroundElement;
+        return theme.colors.backgroundElement;
       case 'selected':
-        return theme.backgroundSelected;
+        return theme.colors.backgroundSelected;
       default:
-        return theme.background;
+        return theme.colors.background;
     }
   };
 

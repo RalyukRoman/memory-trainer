@@ -5,7 +5,7 @@ import ThemedInput from '../ui/themed-input';
 
 import { SPACING } from '../../constants/tokens';
 
-export default function SettingInputRow({
+export default function SettingsInputRow({
   label, value, onChangeText,
   keyboardType = 'number-pad',
   editable = true,

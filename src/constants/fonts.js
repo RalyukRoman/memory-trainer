@@ -32,11 +32,5 @@ export const FONTS_FAMILY = Platform.select({
     serif:   'serif',
     rounded: 'normal',
     mono:    'monospace',
-  },
-  web: {
-    sans:    'var(--font-display)',
-    serif:   'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono:    'var(--font-mono)',
-  },
+  }
 });

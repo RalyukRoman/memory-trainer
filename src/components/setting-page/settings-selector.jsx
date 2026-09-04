@@ -1,6 +1,5 @@
 import { StyleSheet, View, Pressable } from 'react-native';
-
-import { useTheme } from '../../hooks/use-theme';
+import { useTheme }                    from 'expo-router';
 
 import ThemedText from '../ui/themed-text';
 import ThemedView from '../ui/themed-view';
@@ -34,7 +33,7 @@ export default function SettingsSelector({
               key={key}
               style={[
                 styles.button,
-                isSelected && { backgroundColor: theme.text },
+                isSelected && { backgroundColor: theme.colors.text },
               ]}
               onPress={() => onSelect(key)}
             >
@@ -42,7 +41,7 @@ export default function SettingsSelector({
                 variant="captionBold"
                 style={
                   isSelected
-                    ? { color: theme.background }
+                    ? { color: theme.colors.background }
                     : undefined
                 }
               >

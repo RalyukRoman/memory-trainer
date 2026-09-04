@@ -1,8 +1,8 @@
-import { useState, useEffect }                from 'react';
 import { StyleSheet, View, Alert, Pressable } from 'react-native';
+import { useState, useEffect }                from 'react';
+import { useTheme }                           from 'expo-router';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme } from '../hooks/use-theme';
 
 import ThemedView from '../components/ui/themed-view';
 import ThemedText from '../components/ui/themed-text';
@@ -36,7 +36,7 @@ export default function StatsPage() {
   const handleReset = () => {
     Alert.alert(
       'Resetting statistics',
-      'Are you sure you want to reset your record? This action cannot be undone.',
+      'Are you sure you want to reset your record?',
       [
         {
           text: 'Cancel',
@@ -73,8 +73,8 @@ export default function StatsPage() {
 
           <Pressable
             style={({ pressed }) => [
-              styles.resetButton,
-              { borderColor: theme.textSecondary },
+              styles.button,
+              { borderColor: theme.colors.textSecondary },
               pressed && styles.buttonPressed,
             ]}
             onPress={handleReset}
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: SPACING.two,
   },
-  resetButton: {
+  button: {
     width: '100%',
     height: 48,
     justifyContent: 'center',
