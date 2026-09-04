@@ -1,5 +1,6 @@
-import { useState, useEffect }     from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { useState, useCallback }               from 'react';
+import { StyleSheet, View, ScrollView, Alert } from 'react-native';
+import { useFocusEffect }                      from 'expo-router';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -9,17 +10,22 @@ import ThemedView from '../components/ui/themed-view';
 import StatsResetButton from '../components/stats-page/stats-reset-button';
 import StatsScoreList   from '../components/stats-page/stats-score-list';
 import StatsBestScore   from '../components/stats-page/stats-best-score';
+import StatsHistoryCard from '../components/stats-page/stats-history-card';
 
+import { gameDb }                 from '../services/game-db';
 import { getHighScoreKey }        from '../constants/storage-keys';
 import { DIFFICULTIES }           from '../constants/game-values';
 import { SPACING, BORDER_RADIUS } from '../constants/tokens';
 
 export default function StatsPage() {
-  const [scoresList, setScoresList] = useState([]);
+  const [scoresList,  setScoresList]  = useState([]);
+  const [historyList, setHistoryList] = useState([]);
 
-  useEffect(() => {
-    loadScores().then();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadData().then();
+    }, [])
+  );
 
   const loadScoreByDifficulty = async ([
     difficulty, label
@@ -37,7 +43,7 @@ export default function StatsPage() {
     };
   };
 
-  const loadScores = async () => {
+  const loadData = async () => {
     try {
       const loadedScores = await Promise.all(
         Object.entries(DIFFICULTIES).map(
@@ -46,9 +52,12 @@ export default function StatsPage() {
       );
 
       setScoresList(loadedScores);
+
+      const games = await gameDb.getAllGames();
+      setHistoryList(games);
     }
     catch (err) {
-      console.error('Error loading high scores:', err);
+      console.error('Error loading stats data:', err);
     }
   };
 
@@ -93,18 +102,22 @@ export default function StatsPage() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedView variant="element" style={styles.card}>
-        <View style={styles.header}>
-          <ThemedText variant="header">
-            STATISTICS
-          </ThemedText>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ThemedView variant="element" style={styles.card}>
+          <View style={styles.header}>
+            <ThemedText variant="header">
+              STATISTICS
+            </ThemedText>
 
-          <StatsResetButton onPress={handleReset} />
-        </View>
+            <StatsResetButton onPress={handleReset} />
+          </View>
 
-        <StatsScoreList data={scoresList} />
-        <StatsBestScore bestScore={bestScore} />
-      </ThemedView>
+          <StatsScoreList data={scoresList} />
+          <StatsBestScore bestScore={bestScore} />
+        </ThemedView>
+
+        <StatsHistoryCard history={historyList} />
+      </ScrollView>
     </ThemedView>
   );
 }
@@ -112,9 +125,11 @@ export default function StatsPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+  },
+  scrollContent: {
     alignItems: 'center',
     padding: SPACING.four,
+    gap: SPACING.four,
   },
   card: {
     width: '100%',
@@ -128,6 +143,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: SPACING.three,
+    marginBottom: SPACING.one,
   },
 });
