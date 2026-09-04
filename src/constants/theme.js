@@ -2,9 +2,9 @@ import { COLORS }        from './colors';
 import { DEFAULT_FONTS } from './fonts';
 
 export const THEMES = {
-  system: 'System',
-  light: 'Light',
-  dark: 'Dark',
+  system: 'SYSTEM',
+  light: 'LIGHT',
+  dark: 'DARK',
 };
 
 export const AppLightTheme = {
