@@ -1,24 +1,28 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import {useFocusEffect} from 'expo-router';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, View }                         from 'react-native';
+import { SafeAreaProvider, SafeAreaView }           from 'react-native-safe-area-context';
+import { useFocusEffect }                           from 'expo-router';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import GameNumberDisplay from '../components/game-page/game-number-display';
-import GameInfo from '../components/game-page/game-info';
-import GameBar from '../components/game-page/game-bar';
-import GameScoreBoard from '../components/game-page/game-score-board';
-import GameTopBar from '../components/game-page/game-top-bar';
+import GameInfo          from '../components/game-page/game-info';
+import GameBar           from '../components/game-page/game-bar';
+import GameScoreBoard    from '../components/game-page/game-score-board';
+import GameTopBar        from '../components/game-page/game-top-bar';
 
 import ThemedText from "../components/ui/themed-text";
 import ThemedView from '../components/ui/themed-view';
 
-import {gameDb} from '../services/game-db';
-import {STORAGE_KEYS} from '../constants/storage-keys';
-import {BORDER_RADIUS, SPACING} from '../constants/tokens';
+import { gameDb }                       from '../services/game-db';
+import { STORAGE_KEYS, getHighScoreKey } from '../constants/storage-keys';
+import { BORDER_RADIUS, SPACING }        from '../constants/tokens';
 
-import {DEFAULT_SETTINGS, DIFFICULTY_PRESETS, GAME_PHASES,} from '../constants/game-values';
+import {
+  DEFAULT_SETTINGS,
+  DIFFICULTY_PRESETS,
+  GAME_PHASES,
+} from '../constants/game-values';
 
 export default function GamePage() {
   const [gameConfig, setGameConfig] = useState(DEFAULT_SETTINGS.config);
@@ -44,7 +48,6 @@ export default function GamePage() {
 
   useFocusEffect(
     useCallback(() => {
-      loadHighScore().then();
       loadGameConfigs().then();
     }, [])
   );
@@ -88,6 +91,7 @@ export default function GamePage() {
       }
 
       setDifficulty(activeDiff);
+      await loadHighScore(activeDiff);
 
       if (activeDiff === 'CUSTOM' && savedConfig) {
         setGameConfig(JSON.parse(savedConfig));
@@ -102,15 +106,16 @@ export default function GamePage() {
     }
   };
 
-  const loadHighScore = async () => {
+  const loadHighScore = async (activeDiff = difficulty) => {
     try {
       const rawScore = await AsyncStorage.getItem(
-        STORAGE_KEYS.GAMEPLAY.HIGH_SCORE
+        getHighScoreKey(activeDiff)
       );
 
       if (rawScore !== null) {
-        const loadedScore = parseInt(rawScore, 10);
-        setHighScore(loadedScore);
+        setHighScore(parseInt(rawScore, 10));
+      } else {
+        setHighScore(0);
       }
     }
     catch (err) {
@@ -124,7 +129,7 @@ export default function GamePage() {
         setHighScore(targetScore);
 
         await AsyncStorage.setItem(
-          STORAGE_KEYS.GAMEPLAY.HIGH_SCORE,
+          getHighScoreKey(difficulty),
           targetScore.toString()
         );
       }

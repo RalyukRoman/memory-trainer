@@ -9,3 +9,9 @@ export const STORAGE_KEYS = {
     CUSTOM_CONFIG: 'custom_config',
   },
 };
+
+export const getHighScoreKey = (
+  difficulty
+) => (
+  `${STORAGE_KEYS.GAMEPLAY.HIGH_SCORE}${difficulty}`
+);
