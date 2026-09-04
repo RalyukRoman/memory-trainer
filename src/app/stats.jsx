@@ -1,99 +1,116 @@
-import { StyleSheet, View, Alert, Pressable } from 'react-native';
-import { useState, useEffect }                from 'react';
-import { useTheme }                           from 'expo-router';
+import { useState, useEffect }     from 'react';
+import { StyleSheet, View, Alert } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import ThemedView from '../components/ui/themed-view';
 import ThemedText from '../components/ui/themed-text';
+import ThemedView from '../components/ui/themed-view';
 
-import { STORAGE_KEYS } from '../constants/storage-keys';
+import StatsResetButton from '../components/stats-page/stats-reset-button';
+import StatsScoreList   from '../components/stats-page/stats-score-list';
+import StatsBestScore   from '../components/stats-page/stats-best-score';
+
+import { getHighScoreKey }        from '../constants/storage-keys';
+import { DIFFICULTIES }           from '../constants/game-values';
 import { SPACING, BORDER_RADIUS } from '../constants/tokens';
 
 export default function StatsPage() {
-  const [highScore, setHighScore] = useState(0);
-  const theme = useTheme();
+  const [scoresList, setScoresList] = useState([]);
 
   useEffect(() => {
-    loadScore().then();
+    loadScores().then();
   }, []);
 
-  const loadScore = async () => {
+  const loadScoreByDifficulty = async ([
+    difficulty, label
+  ]) => {
+    const rawScore = await AsyncStorage.getItem(
+      getHighScoreKey(difficulty)
+    );
+
+    return {
+      difficulty: difficulty,
+      label: label,
+      score: rawScore !== null
+        ? parseInt(rawScore, 10)
+        : 0,
+    };
+  };
+
+  const loadScores = async () => {
     try {
-      const rawScore = await AsyncStorage.getItem(
-        STORAGE_KEYS.GAMEPLAY.HIGH_SCORE
+      const loadedScores = await Promise.all(
+        Object.entries(DIFFICULTIES).map(
+          loadScoreByDifficulty
+        )
       );
 
-      if (rawScore !== null) {
-        setHighScore(parseInt(rawScore, 10));
-      }
+      setScoresList(loadedScores);
     }
     catch (err) {
-      console.error('Error loading high score:', err);
+      console.error('Error loading high scores:', err);
+    }
+  };
+
+  const resetScores = async () => {
+    try {
+      for (const key of Object.keys(DIFFICULTIES)) {
+        await AsyncStorage.removeItem(
+          getHighScoreKey(key)
+        );
+      }
+
+      setScoresList((prev) =>
+        prev.map((item) => ({ ...item, score: 0 }))
+      );
+    }
+    catch (err) {
+      console.error('Error resetting scores:', err);
     }
   };
 
   const handleReset = () => {
     Alert.alert(
-      'Resetting statistics',
-      'Are you sure you want to reset your record?',
+      'Reset Statistics',
+      'Are you sure you want to reset all high scores?',
       [
         {
           text: 'Cancel',
-          style: 'cancel'
+          style: 'cancel',
         },
         {
-          text: 'Reset',
+          text: 'Reset All',
           style: 'destructive',
-          onPress: async () => {
-            try {
-              await AsyncStorage.removeItem(STORAGE_KEYS.GAMEPLAY.HIGH_SCORE);
-              setHighScore(0);
-            } catch (err) {
-              console.error('Error resetting score:', err);
-            }
-          }
-        }
+          onPress: resetScores,
+        },
       ]
     );
   };
 
+  const bestScore = scoresList.length > 0
+    ? Math.max(...scoresList.map((item) => item.score), 0)
+    : 0;
+
   return (
     <ThemedView style={styles.container}>
-      <View style={styles.content}>
-        <ThemedView variant="element" style={styles.card}>
-          <ThemedText variant="header" style={styles.title}>
-            СТАТИСТИКА
+      <ThemedView variant="element" style={styles.card}>
+        <View style={styles.header}>
+          <ThemedText variant="header">
+            STATISTICS
           </ThemedText>
 
-          <View style={styles.statRow}>
-            <ThemedText variant="body">Найкращий результат:</ThemedText>
-            <ThemedText variant="monoDisplay">{highScore}</ThemedText>
-          </View>
+          <StatsResetButton onPress={handleReset} />
+        </View>
 
-          <Pressable
-            style={({ pressed }) => [
-              styles.button,
-              { borderColor: theme.colors.textSecondary },
-              pressed && styles.buttonPressed,
-            ]}
-            onPress={handleReset}
-          >
-            <ThemedText variant="button" colorVariant="secondary">
-              СКИНУТИ ОЧКИ
-            </ThemedText>
-          </Pressable>
-        </ThemedView>
-      </View>
+        <StatsScoreList data={scoresList} />
+        <StatsBestScore bestScore={bestScore} />
+      </ThemedView>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -102,28 +119,15 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: 320,
-    alignItems: 'center',
-    gap: SPACING.four,
     padding: SPACING.four,
     borderRadius: BORDER_RADIUS.lg,
-  },
-  title: {
-    marginBottom: SPACING.two,
-  },
-  statRow: {
-    alignItems: 'center',
     gap: SPACING.two,
   },
-  button: {
+  header: {
     width: '100%',
-    height: 48,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: SPACING.five,
-    borderWidth: 1,
-    borderRadius: BORDER_RADIUS.sm,
-  },
-  buttonPressed: {
-    opacity: 0.5,
+    marginBottom: SPACING.three,
   },
 });
