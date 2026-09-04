@@ -248,25 +248,6 @@ export default function GamePage() {
 
       setScore(nextScore);
       setLevel(nextLevel);
-
-      if (gameIdRef.current) {
-        await gameDb.updateProgress(
-          gameIdRef.current,
-          nextScore,
-          nextLevel
-        );
-      }
-    } else {
-      if (gameIdRef.current) {
-        await gameDb.finishGame(
-          gameIdRef.current,
-          score,
-          level,
-          'COMPLETED'
-        );
-
-        gameIdRef.current = null;
-      }
     }
   };
 
