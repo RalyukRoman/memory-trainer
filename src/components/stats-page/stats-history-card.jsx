@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     maxWidth: 320,
     maxHeight: 320,
     padding: SPACING.four,
+    paddingRight: SPACING.two,
     borderRadius: BORDER_RADIUS.lg,
     gap: SPACING.two,
   },
@@ -72,7 +73,8 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    width: '100%',
+    width: '95%',
     marginVertical: SPACING.one,
+    marginRight: SPACING.three,
   },
 });

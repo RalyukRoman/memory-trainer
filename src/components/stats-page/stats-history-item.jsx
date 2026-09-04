@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: SPACING.one,
+    marginRight: SPACING.three,
   },
   leftColumn: {
     alignSelf: 'flex-start',
