@@ -1,6 +1,6 @@
 import { Text }       from 'react-native';
 import { useTheme }   from 'expo-router';
-import { typography } from '../../styles/typography';
+import { typography } from '../../constants/typography';
 
 export default function ThemedText({
   variant = 'body',

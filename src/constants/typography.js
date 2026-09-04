@@ -1,5 +1,5 @@
 import { StyleSheet }   from "react-native";
-import { FONTS_FAMILY } from "../constants/fonts";
+import { FONTS_FAMILY } from "./fonts";
 
 export const typography = StyleSheet.create({
   caption: {
