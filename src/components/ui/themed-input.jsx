@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.sm,
     fontFamily: FONTS_FAMILY.mono,
     fontSize: 18,
-    letterSpacing: 4,
     textAlign: 'center',
   },
 });

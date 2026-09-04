@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import ThemedText  from '../ui/themed-text';
 import ThemedInput from '../ui/themed-input';
 
-import { SPACING } from '../../constants/tokens';
+import { BORDER_RADIUS, SPACING } from '../../constants/tokens';
 
 export default function SettingsInputRow({
   label, value, onChangeText,
@@ -13,7 +13,7 @@ export default function SettingsInputRow({
   return (
     <View style={styles.row}>
       <ThemedText
-        variant="caption"
+        variant="body"
         style={styles.label}
       >
         {label}
@@ -41,8 +41,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    width: 80,
-    height: 41,
+    width: 68,
+    height: 32,
     paddingHorizontal: SPACING.two,
+    paddingVertical: 0,
+    borderRadius: BORDER_RADIUS.xs,
+    letterSpacing: -1,
   },
 });

@@ -13,6 +13,7 @@ export default function GameInput({
     <View style={styles.container}>
       <ThemedInput
         ref={inputRef}
+        style={{ letterSpacing: 4 }}
         keyboardType="number-pad"
         value={input}
         onChangeText={setInput}
