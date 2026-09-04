@@ -1,5 +1,5 @@
-import { StyleSheet, FlatList, View } from 'react-native';
-import { useTheme }                    from 'expo-router';
+import { StyleSheet, View } from 'react-native';
+import { useTheme }         from 'expo-router';
 
 import StatsScoreItem from './stats-score-item';
 import { SPACING }    from '../../constants/tokens';
@@ -7,26 +7,23 @@ import { SPACING }    from '../../constants/tokens';
 export default function StatsScoreList({ data }) {
   const theme = useTheme();
 
-  const renderItem = ({ item }) => <StatsScoreItem item={item} />;
-
-  const renderSeparator = () => (
-    <View
-      style={[
-        styles.separator,
-        { backgroundColor: theme.colors.border },
-      ]}
-    />
-  );
-
   return (
-    <FlatList
-      data={data}
-      keyExtractor={(item) => item.difficulty}
-      renderItem={renderItem}
-      ItemSeparatorComponent={renderSeparator}
-      scrollEnabled={false}
-      style={styles.list}
-    />
+    <View style={styles.list}>
+      {data.map((item, index) => (
+        <View key={item.difficulty}>
+          <StatsScoreItem item={item} />
+
+          {index < data.length - 1 && (
+            <View
+              style={[
+                styles.separator,
+                { backgroundColor: theme.colors.border },
+              ]}
+            />
+          )}
+        </View>
+      ))}
+    </View>
   );
 }
 
