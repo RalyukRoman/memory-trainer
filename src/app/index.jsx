@@ -1,27 +1,24 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, View }                         from 'react-native';
-import { SafeAreaView, SafeAreaProvider }           from 'react-native-safe-area-context';
-import { useFocusEffect }                           from 'expo-router';
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {useFocusEffect} from 'expo-router';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import GameNumberDisplay from '../components/game-page/game-number-display';
-import GameInfo          from '../components/game-page/game-info';
-import GameBar           from '../components/game-page/game-bar';
-import GameScoreBoard    from '../components/game-page/game-score-board';
-import GameTopBar        from '../components/game-page/game-top-bar';
+import GameInfo from '../components/game-page/game-info';
+import GameBar from '../components/game-page/game-bar';
+import GameScoreBoard from '../components/game-page/game-score-board';
+import GameTopBar from '../components/game-page/game-top-bar';
 
-import ThemedText        from "../components/ui/themed-text";
-import ThemedView        from '../components/ui/themed-view';
+import ThemedText from "../components/ui/themed-text";
+import ThemedView from '../components/ui/themed-view';
 
-import { STORAGE_KEYS }           from '../constants/storage-keys';
-import { SPACING, BORDER_RADIUS }   from '../constants/tokens';
+import {gameDb} from '../services/game-db';
+import {STORAGE_KEYS} from '../constants/storage-keys';
+import {BORDER_RADIUS, SPACING} from '../constants/tokens';
 
-import {
-  DIFFICULTY_PRESETS,
-  DEFAULT_SETTINGS,
-  GAME_PHASES,
-} from '../constants/game-values';
+import {DEFAULT_SETTINGS, DIFFICULTY_PRESETS, GAME_PHASES,} from '../constants/game-values';
 
 export default function GamePage() {
   const [gameConfig, setGameConfig] = useState(DEFAULT_SETTINGS.config);
@@ -37,8 +34,13 @@ export default function GamePage() {
   const [score,     setScore]     = useState(0);
   const [highScore, setHighScore] = useState(0);
 
-  const timerRef = useRef(null);
-  const inputRef = useRef(null);
+  const timerRef  = useRef(null);
+  const inputRef  = useRef(null);
+  const gameIdRef = useRef(null);
+
+  useEffect(() => {
+    gameDb.interruptGames().then();
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -62,8 +64,6 @@ export default function GamePage() {
 
       const activeDiff = savedDiff || DEFAULT_SETTINGS.difficulty;
 
-      console.log('as')
-
       if (activeDiff !== difficulty     &&
           phase !== GAME_PHASES.IDLE    &&
           phase !== GAME_PHASES.RESULT  &&
@@ -73,10 +73,21 @@ export default function GamePage() {
           clearInterval(timerRef.current);
         }
 
+        if (currentGameIdRef.current) {
+          await gameDb.finishGame(
+            currentGameIdRef.current,
+            score,
+            level,
+            'INTERRUPTED'
+          );
+
+          gameIdRef.current = null;
+        }
+
         setPhase(GAME_PHASES.STOPPED);
       }
 
-      setDifficulty(difficulty);
+      setDifficulty(activeDiff);
 
       if (activeDiff === 'CUSTOM' && savedConfig) {
         setGameConfig(JSON.parse(savedConfig));
@@ -202,9 +213,13 @@ export default function GamePage() {
     }, 30);
   };
 
-  const handleStartGame = () => {
+  const handleStartGame = async () => {
     setLevel(1);
     setScore(0);
+
+    gameIdRef.current = await gameDb.createGame(
+      difficulty
+    );
 
     startRound(1);
   };
@@ -228,6 +243,25 @@ export default function GamePage() {
 
       setScore(nextScore);
       setLevel(nextLevel);
+
+      if (currentGameIdRef.current) {
+        await gameDb.updateProgress(
+          currentGameIdRef.current,
+          nextScore,
+          nextLevel
+        );
+      }
+    } else {
+      if (currentGameIdRef.current) {
+        await gameDb.finishGame(
+          currentGameIdRef.current,
+          score,
+          level,
+          'COMPLETED'
+        );
+
+        currentGameIdRef.current = null;
+      }
     }
   };
 
