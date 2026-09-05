@@ -68,7 +68,7 @@ class GameDatabase {
 
   async updateProgress(
     gameId, score, level
-  ) {
+  ){
     if (!gameId) return;
     await this.initializeDb();
 
@@ -90,7 +90,7 @@ class GameDatabase {
   async finishGame(
     gameId, score, level,
     status = 'COMPLETED'
-  ) {
+  ){
     if (!gameId) return;
     await this.initializeDb();
 
