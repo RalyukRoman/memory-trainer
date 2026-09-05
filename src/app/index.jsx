@@ -3,8 +3,6 @@ import { StyleSheet, View }                         from 'react-native';
 import { SafeAreaView }                             from 'react-native-safe-area-context';
 import { useFocusEffect }                           from 'expo-router';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import GameNumberDisplay from '../components/game-page/game-number-display';
 import GameInfo          from '../components/game-page/game-info';
 import GameBar           from '../components/game-page/game-bar';
@@ -14,15 +12,12 @@ import GameTopBar        from '../components/game-page/game-top-bar';
 import ThemedText from "../components/ui/themed-text";
 import ThemedView from '../components/ui/themed-view';
 
-import { gameDb }                       from '../services/game-db';
-import { STORAGE_KEYS, getHighScoreKey } from '../constants/storage-keys';
+import { gameDb }                        from '../services/game-db';
+import { settingsService }               from '../services/settings-service';
+import { scoreService }                  from '../services/score-service';
+import { gameCalculator }                from '../services/game-calculator';
 import { BORDER_RADIUS, SPACING }        from '../constants/tokens';
-
-import {
-  DEFAULT_SETTINGS,
-  DIFFICULTY_PRESETS,
-  GAME_PHASES,
-} from '../constants/game-values';
+import { DEFAULT_SETTINGS, GAME_PHASES } from '../constants/game-values';
 
 export default function GamePage() {
   const [gameConfig, setGameConfig] = useState(DEFAULT_SETTINGS.config);
@@ -44,6 +39,12 @@ export default function GamePage() {
 
   useEffect(() => {
     gameDb.interruptGames().then();
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
   }, []);
 
   useFocusEffect(
@@ -52,147 +53,54 @@ export default function GamePage() {
     }, [])
   );
 
-  useEffect(() => {
-    return () => {
+  const loadGameConfigs = async () => {
+    const { difficulty: activeDiff, config: activeConfig } =
+      await settingsService.loadSettings();
+
+    if (
+      activeDiff !== difficulty     &&
+      phase !== GAME_PHASES.IDLE    &&
+      phase !== GAME_PHASES.RESULT  &&
+      phase !== GAME_PHASES.STOPPED
+    ) {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
-    };
-  }, []);
 
-  const loadGameConfigs = async () => {
-    try {
-      const savedDiff   = await AsyncStorage.getItem(STORAGE_KEYS.SETTINGS.DIFFICULTY);
-      const savedConfig = await AsyncStorage.getItem(STORAGE_KEYS.SETTINGS.CUSTOM_CONFIG);
-
-      const activeDiff = savedDiff || DEFAULT_SETTINGS.difficulty;
-
-      if (activeDiff !== difficulty     &&
-          phase !== GAME_PHASES.IDLE    &&
-          phase !== GAME_PHASES.RESULT  &&
-          phase !== GAME_PHASES.STOPPED
-      ){
-        if (timerRef.current) {
-          clearInterval(timerRef.current);
-        }
-
-        if (gameIdRef.current) {
-          await gameDb.finishGame(
-            gameIdRef.current,
-            score,
-            level,
-            'INTERRUPTED'
-          );
-
-          gameIdRef.current = null;
-        }
-
-        setPhase(GAME_PHASES.STOPPED);
-      }
-
-      setDifficulty(activeDiff);
-      await loadHighScore(activeDiff);
-
-      if (activeDiff === 'CUSTOM' && savedConfig) {
-        setGameConfig(JSON.parse(savedConfig));
-      } else if (DIFFICULTY_PRESETS[activeDiff]) {
-        setGameConfig(DIFFICULTY_PRESETS[activeDiff]);
-      } else {
-        setGameConfig(DEFAULT_SETTINGS.config);
-      }
-    }
-    catch (err) {
-      console.error('Error loading game configs:', err);
-    }
-  };
-
-  const loadHighScore = async (activeDiff = difficulty) => {
-    try {
-      const rawScore = await AsyncStorage.getItem(
-        getHighScoreKey(activeDiff)
-      );
-
-      if (rawScore !== null) {
-        setHighScore(parseInt(rawScore, 10));
-      } else {
-        setHighScore(0);
-      }
-    }
-    catch (err) {
-      console.error('Error loading high score:', err);
-    }
-  };
-
-  const saveHighScore = async (targetScore) => {
-    try {
-      if (targetScore > highScore) {
-        setHighScore(targetScore);
-
-        await AsyncStorage.setItem(
-          getHighScoreKey(difficulty),
-          targetScore.toString()
+      if (gameIdRef.current) {
+        await gameDb.finishGame(
+          gameIdRef.current,
+          score,
+          level,
+          'INTERRUPTED'
         );
+
+        gameIdRef.current = null;
       }
-    }
-    catch (err) {
-      console.error('Error saving high score:', err);
-    }
-  };
 
-  const calculateDigitCount = (currentLevel) => {
-    const extraDigits =
-      Math.floor((currentLevel - 1)
-        / gameConfig.levelsPerExtraDigit);
-
-    const totalDigits =
-      gameConfig.initialDigitCount
-        + extraDigits;
-
-    return Math.min(
-      totalDigits,
-      gameConfig.maxDigitCount
-    );
-  };
-
-  const calculateDuration = (currentLevel) => {
-    const durationReduction =
-      Math.floor((currentLevel - 1)
-        / gameConfig.levelsPerExtraDigit)
-        * 0.25;
-
-    const currentDuration =
-      gameConfig.initialDuration
-        - durationReduction;
-
-    return Math.max(
-      currentDuration,
-      gameConfig.minDuration
-    );
-  };
-
-  const generateSequence = (currentLevel) => {
-    const digitCount = calculateDigitCount(currentLevel);
-    let result = [];
-
-    for (let i = 0; i < digitCount; i++) {
-      const randDigit = Math.floor(Math.random() * 10);
-      result.push(randDigit);
+      setPhase(GAME_PHASES.STOPPED);
     }
 
-    return result;
+    const loadedScore = await scoreService.loadHighScore(activeDiff);
+
+    setDifficulty(activeDiff);
+    setGameConfig(activeConfig);
+    setHighScore(loadedScore);
   };
 
-  const startRound = (newLevel = level) => {
+  const startRound = (
+    newLevel = level
+  ) => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
 
-    const generated = generateSequence(newLevel);
-    setSequence(generated);
+    const generated = gameCalculator.generateSequence(newLevel, gameConfig);
+    const duration = gameCalculator.calculateDuration(newLevel, gameConfig);
 
     const startTime = Date.now();
-    const duration = calculateDuration(newLevel);
 
+    setSequence(generated);
     setInput('');
     setTimeLeft(duration);
     setPhase(GAME_PHASES.SHOW);
@@ -209,11 +117,7 @@ export default function GamePage() {
         }
 
         setPhase(GAME_PHASES.INPUT);
-
-        setTimeout(
-          () => inputRef.current?.focus(),
-          100
-        );
+        setTimeout(() => inputRef.current?.focus(), 100);
       }
     }, 30);
   };
@@ -222,10 +126,7 @@ export default function GamePage() {
     setLevel(1);
     setScore(0);
 
-    gameIdRef.current = await gameDb.createGame(
-      difficulty
-    );
-
+    gameIdRef.current = await gameDb.createGame(difficulty);
     startRound(1);
   };
 
@@ -236,16 +137,21 @@ export default function GamePage() {
     const sequenceStr = sequence.join('');
 
     const isInputCorrect = formattedInput === sequenceStr;
-    setIsCorrect(isInputCorrect);
 
+    setIsCorrect(isInputCorrect);
     setPhase(GAME_PHASES.RESULT);
 
     if (isInputCorrect) {
       const nextScore = score + gameConfig.pointsPerLevel;
       const nextLevel = level + 1;
 
-      await saveHighScore(nextScore);
+      const updatedHighScore = await scoreService.saveHighScore(
+        difficulty,
+        nextScore,
+        highScore
+      );
 
+      setHighScore(updatedHighScore);
       setScore(nextScore);
       setLevel(nextLevel);
     }

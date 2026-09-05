@@ -2,8 +2,8 @@ import { useState, useEffect }    from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView }           from 'react-native-safe-area-context';
 
-import AsyncStorage        from '@react-native-async-storage/async-storage';
 import { useThemeContext } from './_layout';
+import { settingsService } from '../services/settings-service';
 
 import ThemedText from '../components/ui/themed-text';
 import ThemedView from '../components/ui/themed-view';
@@ -11,79 +11,45 @@ import ThemedView from '../components/ui/themed-view';
 import SettingsSelector from '../components/setting-page/settings-selector';
 import SettingsConfigs  from '../components/setting-page/settings-configs';
 
-import { THEMES }       from '../constants/theme';
-import { STORAGE_KEYS } from '../constants/storage-keys';
-import { SPACING }      from '../constants/tokens';
-
-import {
-  DIFFICULTY_PRESETS,
-  DEFAULT_SETTINGS,
-  DIFFICULTIES,
-} from '../constants/game-values';
+import { THEMES }                            from '../constants/theme';
+import { SPACING }                           from '../constants/tokens';
+import { DIFFICULTY_PRESETS, DIFFICULTIES }  from '../constants/game-values';
 
 export default function SettingsPage() {
   const { loadTheme: loadThemeInApp } = useThemeContext();
 
-  const [selectedTheme, setSelectedTheme] = useState(DEFAULT_SETTINGS.theme);
-  const [difficulty,    setDifficulty]    = useState(DEFAULT_SETTINGS.difficulty);
-  const [config,        setConfig]        = useState(DEFAULT_SETTINGS.config);
+  const [selectedTheme, setSelectedTheme] = useState('system');
+  const [difficulty,    setDifficulty]    = useState('MEDIUM');
+  const [config,        setConfig]        = useState({});
 
   useEffect(() => {
     loadSettings().then();
   }, []);
 
   const loadSettings = async () => {
-    try {
-      const savedTheme  = await AsyncStorage.getItem(STORAGE_KEYS.SETTINGS.THEME);
-      const savedDiff   = await AsyncStorage.getItem(STORAGE_KEYS.SETTINGS.DIFFICULTY);
-      const savedConfig = await AsyncStorage.getItem(STORAGE_KEYS.SETTINGS.CUSTOM_CONFIG);
+    const settings = await settingsService.loadSettings();
 
-      const activeTheme = savedTheme || DEFAULT_SETTINGS.theme;
-      setSelectedTheme(activeTheme);
-
-      const activeDiff = savedDiff || DEFAULT_SETTINGS.difficulty;
-      setDifficulty(activeDiff);
-
-      if (activeDiff === 'CUSTOM' && savedConfig) {
-        setConfig(JSON.parse(savedConfig));
-      } else if (DIFFICULTY_PRESETS[activeDiff]) {
-        setConfig(DIFFICULTY_PRESETS[activeDiff]);
-      } else {
-        setConfig(DEFAULT_SETTINGS.config);
-      }
-    }
-    catch (err) {
-      console.error('Error loading settings:', err);
-    }
+    setSelectedTheme(settings.theme);
+    setDifficulty(settings.difficulty);
+    setConfig(settings.config);
   };
 
   const handleThemeChange = async (newTheme) => {
     setSelectedTheme(newTheme);
-
-    await AsyncStorage.setItem(
-      STORAGE_KEYS.SETTINGS.THEME,
-      newTheme
-    );
+    await settingsService.saveTheme(newTheme);
 
     loadThemeInApp();
   };
 
   const handleDifficultyChange = async (newDiff) => {
     setDifficulty(newDiff);
-
-    await AsyncStorage.setItem(
-      STORAGE_KEYS.SETTINGS.DIFFICULTY,
-      newDiff
-    );
+    await settingsService.saveDifficulty(newDiff);
 
     if (newDiff !== 'CUSTOM') {
       const newConfig = DIFFICULTY_PRESETS[newDiff];
-      setConfig(newConfig);
 
-      await AsyncStorage.setItem(
-        STORAGE_KEYS.SETTINGS.CUSTOM_CONFIG,
-        JSON.stringify(newConfig)
-      );
+      setConfig(newConfig);
+      await settingsService.saveCustomConfig(newConfig);
     }
   };
 
@@ -91,12 +57,9 @@ export default function SettingsPage() {
     if (difficulty === 'CUSTOM') {
       const numValue = parseFloat(value) || 0;
       const updated = { ...config, [key]: numValue };
-      setConfig(updated);
 
-      await AsyncStorage.setItem(
-        STORAGE_KEYS.SETTINGS.CUSTOM_CONFIG,
-        JSON.stringify(updated)
-      );
+      setConfig(updated);
+      await settingsService.saveCustomConfig(updated);
     }
   };
 

@@ -5,10 +5,8 @@ import { ThemeProvider }  from 'expo-router';
 import { useColorScheme } from 'react-native';
 import { Stack }          from 'expo-router';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { settingsService }             from '../services/settings-service';
 import { AppLightTheme, AppDarkTheme } from '../constants/theme';
-import { STORAGE_KEYS }                from '../constants/storage-keys';
 
 const ThemeContext = createContext({
   loadTheme: () => {}
@@ -23,18 +21,8 @@ export default function RootLayout() {
   }, []);
 
   const loadTheme = async () => {
-    try {
-      const savedTheme = await AsyncStorage.getItem(
-        STORAGE_KEYS.SETTINGS.THEME
-      );
-
-      if (savedTheme) {
-        setThemeMode(savedTheme);
-      }
-    }
-    catch (err) {
-      console.error('Error loading theme:', err);
-    }
+    const { theme } = await settingsService.loadSettings();
+    setThemeMode(theme);
   };
 
   const isDark =

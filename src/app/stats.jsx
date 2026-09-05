@@ -3,8 +3,6 @@ import { StyleSheet, View, Alert } from 'react-native';
 import { SafeAreaView }            from 'react-native-safe-area-context';
 import { useFocusEffect }          from 'expo-router';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import ThemedText from '../components/ui/themed-text';
 import ThemedView from '../components/ui/themed-view';
 
@@ -14,8 +12,7 @@ import StatsBestScore   from '../components/stats-page/stats-best-score';
 import StatsHistoryCard from '../components/stats-page/stats-history-card';
 
 import { gameDb }                 from '../services/game-db';
-import { getHighScoreKey }        from '../constants/storage-keys';
-import { DIFFICULTIES }           from '../constants/game-values';
+import { scoreService }           from '../services/score-service';
 import { SPACING, BORDER_RADIUS } from '../constants/tokens';
 
 export default function StatsPage() {
@@ -28,77 +25,43 @@ export default function StatsPage() {
     }, [])
   );
 
-  const loadScoreByDifficulty = async ([
-    difficulty, label
-  ]) => {
-    const rawScore = await AsyncStorage.getItem(
-      getHighScoreKey(difficulty)
-    );
-
-    return {
-      difficulty: difficulty,
-      label: label,
-      score: rawScore !== null
-        ? parseInt(rawScore, 10)
-        : 0,
-    };
-  };
-
   const loadData = async () => {
-    try {
-      const loadedScores = await Promise.all(
-        Object.entries(DIFFICULTIES).map(
-          loadScoreByDifficulty
-        )
-      );
+    const scores = await scoreService.loadAllHighScores();
+    setScoresList(scores);
 
-      setScoresList(loadedScores);
-
-      const games = await gameDb.getAllGames();
-      setHistoryList(games);
-    }
-    catch (err) {
-      console.error('Error loading stats data:', err);
-    }
+    const games = await gameDb.getAllGames();
+    setHistoryList(games);
   };
 
   const resetScores = async () => {
-    try {
-      for (const key of Object.keys(DIFFICULTIES)) {
-        await AsyncStorage.removeItem(
-          getHighScoreKey(key)
-        );
-      }
+    await scoreService.resetAllScores();
 
-      setScoresList((prev) =>
-        prev.map((item) => ({ ...item, score: 0 }))
-      );
-    }
-    catch (err) {
-      console.error('Error resetting scores:', err);
-    }
+    setScoresList((prev) =>
+      prev.map((item) => ({ ...item, score: 0 }))
+    );
   };
 
   const handleReset = () => {
     Alert.alert(
       'Reset Statistics',
       'Are you sure you want to reset all high scores?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Reset All',
-          style: 'destructive',
-          onPress: resetScores,
-        },
-      ]
+      [{
+        text: 'Cancel',
+        style: 'cancel',
+      },{
+        text: 'Reset All',
+        style: 'destructive',
+        onPress: resetScores,
+      }]
     );
   };
 
+  const scores = scoresList.map(
+    (item) => item.score
+  );
+
   const bestScore = scoresList.length > 0
-    ? Math.max(...scoresList.map((item) => item.score), 0)
+    ? Math.max(...scores, 0)
     : 0;
 
   return (
