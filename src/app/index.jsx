@@ -69,11 +69,8 @@ export default function GamePage() {
       }
 
       if (gameIdRef.current) {
-        await gameDb.finishGame(
-          gameIdRef.current,
-          score,
-          level,
-          'INTERRUPTED'
+        await gameDb.interruptGame(
+          gameIdRef.current, score, level
         );
 
         gameIdRef.current = null;
@@ -124,6 +121,14 @@ export default function GamePage() {
   };
 
   const handleStartGame = async () => {
+    if (gameIdRef.current) {
+      await gameDb.interruptGame(
+        gameIdRef.current, score, level
+      );
+
+      gameIdRef.current = null;
+    }
+
     setLevel(1);
     setScore(0);
 
@@ -155,6 +160,20 @@ export default function GamePage() {
       setHighScore(updatedHighScore);
       setScore(nextScore);
       setLevel(nextLevel);
+
+      if (gameIdRef.current) {
+        await gameDb.updateProgress(
+          gameIdRef.current, nextScore, nextLevel
+        );
+      }
+    } else {
+      if (gameIdRef.current) {
+        await gameDb.finishGame(
+          gameIdRef.current, score, level
+        );
+
+        gameIdRef.current = null;
+      }
     }
   };
 

@@ -48,6 +48,15 @@ class GameDatabase {
     }
   }
 
+  async interruptGame(
+    gameId, score, level
+  ){
+    await this.finishGame(
+      gameId, score, level,
+      'INTERRUPTED'
+    );
+  }
+
   async createGame(difficulty) {
     await this.initializeDb();
 
