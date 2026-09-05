@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView }                         from 'react-native';
+import { useState, useEffect }    from 'react';
+import { StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView }           from 'react-native-safe-area-context';
 
 import AsyncStorage        from '@react-native-async-storage/async-storage';
 import { useThemeContext } from './_layout';
@@ -8,7 +9,7 @@ import ThemedText from '../components/ui/themed-text';
 import ThemedView from '../components/ui/themed-view';
 
 import SettingsSelector from '../components/setting-page/settings-selector';
-import SettingsConfigs      from '../components/setting-page/settings-configs';
+import SettingsConfigs  from '../components/setting-page/settings-configs';
 
 import { THEMES }       from '../constants/theme';
 import { STORAGE_KEYS } from '../constants/storage-keys';
@@ -103,49 +104,57 @@ export default function SettingsPage() {
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ThemedText
-          variant="captionBold"
-          colorVariant="secondary"
-          style={styles.sectionHeader}
-        >
-          GENERAL
-        </ThemedText>
+      <SafeAreaView
+        style={styles.safeArea}
+        edges={['bottom', 'left', 'right']}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <ThemedText
+            variant="captionBold"
+            colorVariant="secondary"
+            style={styles.sectionHeader}
+          >
+            GENERAL
+          </ThemedText>
 
-        <SettingsSelector
-          title="Theme"
-          options={THEMES}
-          selectedValue={selectedTheme}
-          onSelect={handleThemeChange}
-        />
+          <SettingsSelector
+            title="Theme"
+            options={THEMES}
+            selectedValue={selectedTheme}
+            onSelect={handleThemeChange}
+          />
 
-        <ThemedText
-          variant="captionBold"
-          colorVariant="secondary"
-          style={styles.sectionHeader}
-        >
-          GAME CONFIGS
-        </ThemedText>
+          <ThemedText
+            variant="captionBold"
+            colorVariant="secondary"
+            style={styles.sectionHeader}
+          >
+            GAME CONFIGS
+          </ThemedText>
 
-        <SettingsSelector
-          title="Difficulty"
-          options={DIFFICULTIES}
-          selectedValue={difficulty}
-          onSelect={handleDifficultyChange}
-        />
+          <SettingsSelector
+            title="Difficulty"
+            options={DIFFICULTIES}
+            selectedValue={difficulty}
+            onSelect={handleDifficultyChange}
+          />
 
-        <SettingsConfigs
-          config={config}
-          isCustom={isCustom}
-          onChangeConfig={handleConfigChange}
-        />
-      </ScrollView>
+          <SettingsConfigs
+            config={config}
+            isCustom={isCustom}
+            onChangeConfig={handleConfigChange}
+          />
+        </ScrollView>
+      </SafeAreaView>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  safeArea: {
     flex: 1,
   },
   scrollContent: {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View }                         from 'react-native';
-import { SafeAreaProvider, SafeAreaView }           from 'react-native-safe-area-context';
+import { SafeAreaView }                             from 'react-native-safe-area-context';
 import { useFocusEffect }                           from 'expo-router';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -252,50 +252,48 @@ export default function GamePage() {
   };
 
   return (
-    <SafeAreaProvider>
-      <ThemedView style={styles.container}>
-        <SafeAreaView style={styles.safeArea}>
-          <GameTopBar />
+    <ThemedView style={styles.container}>
+      <SafeAreaView style={styles.safeArea}>
+        <GameTopBar />
 
-          <View style={styles.main}>
-            <ThemedView variant="element" style={styles.card}>
-              <ThemedText variant="header">
-                MEMORY TRAINER
-              </ThemedText>
+        <View style={styles.main}>
+          <ThemedView variant="element" style={styles.card}>
+            <ThemedText variant="header">
+              MEMORY TRAINER
+            </ThemedText>
 
-              <GameNumberDisplay
-                phase={phase}
-                digits={sequence}
-              />
-
-              <GameInfo
-                phase={phase}
-                timeLeft={timeLeft}
-                isCorrect={isCorrect}
-              />
-
-              <GameBar
-                input={input}
-                setInput={setInput}
-                inputRef={inputRef}
-                phase={phase}
-                isCorrect={isCorrect}
-                onSubmit={handleSubmit}
-                onStartGame={handleStartGame}
-                onNextRound={() => startRound(level)}
-                onRestartGame={handleStartGame}
-              />
-            </ThemedView>
-
-            <GameScoreBoard
-              score={score}
-              level={level}
-              highScore={highScore}
+            <GameNumberDisplay
+              phase={phase}
+              digits={sequence}
             />
-          </View>
-        </SafeAreaView>
-      </ThemedView>
-    </SafeAreaProvider>
+
+            <GameInfo
+              phase={phase}
+              timeLeft={timeLeft}
+              isCorrect={isCorrect}
+            />
+
+            <GameBar
+              input={input}
+              setInput={setInput}
+              inputRef={inputRef}
+              phase={phase}
+              isCorrect={isCorrect}
+              onSubmit={handleSubmit}
+              onStartGame={handleStartGame}
+              onNextRound={() => startRound(level)}
+              onRestartGame={handleStartGame}
+            />
+          </ThemedView>
+
+          <GameScoreBoard
+            score={score}
+            level={level}
+            highScore={highScore}
+          />
+        </View>
+      </SafeAreaView>
+    </ThemedView>
   );
 }
 

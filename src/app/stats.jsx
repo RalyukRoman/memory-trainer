@@ -1,5 +1,6 @@
 import { useState, useCallback }   from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
+import { SafeAreaView }            from 'react-native-safe-area-context';
 import { useFocusEffect }          from 'expo-router';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -102,20 +103,25 @@ export default function StatsPage() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedView variant="element" style={styles.card}>
-        <View style={styles.header}>
-          <ThemedText variant="header">
-            STATISTICS
-          </ThemedText>
+      <SafeAreaView
+        style={styles.safeArea}
+        edges={['bottom', 'left', 'right']}
+      >
+        <ThemedView variant="element" style={styles.card}>
+          <View style={styles.header}>
+            <ThemedText variant="header">
+              STATISTICS
+            </ThemedText>
 
-          <StatsResetButton onPress={handleReset} />
-        </View>
+            <StatsResetButton onPress={handleReset} />
+          </View>
 
-        <StatsScoreList data={scoresList} />
-        <StatsBestScore bestScore={bestScore} />
-      </ThemedView>
+          <StatsScoreList data={scoresList} />
+          <StatsBestScore bestScore={bestScore} />
+        </ThemedView>
 
-      <StatsHistoryCard history={historyList} />
+        <StatsHistoryCard history={historyList} />
+      </SafeAreaView>
     </ThemedView>
   );
 }
@@ -123,9 +129,11 @@ export default function StatsPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  safeArea: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: SPACING.four,
     gap: SPACING.five,
   },
   card: {

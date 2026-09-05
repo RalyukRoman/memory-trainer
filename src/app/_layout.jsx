@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { SafeAreaProvider }                               from "react-native-safe-area-context";
+
 import { ThemeProvider }  from 'expo-router';
 import { useColorScheme } from 'react-native';
 import { Stack }          from 'expo-router';
@@ -45,36 +47,33 @@ export default function RootLayout() {
     : AppLightTheme
 
   return (
-    <ThemeContext.Provider value={{ loadTheme }}>
-      <ThemeProvider value={currentTheme}>
-        <Stack>
-          <Stack.Screen
-            name="index"
-            options={{
-              headerShown: false,
-            }}
-          />
-
-          <Stack.Screen
-            name="stats"
-            options={{
-              title: 'Statistics',
+    <SafeAreaProvider>
+      <ThemeContext.Provider value={{ loadTheme }}>
+        <ThemeProvider value={currentTheme}>
+          <Stack
+            screenOptions={{
               headerStyle: { backgroundColor: currentTheme.colors.background },
               headerTintColor: currentTheme.colors.text,
             }}
-          />
+          >
+            <Stack.Screen
+              name="index"
+              options={{ headerShown: false }}
+            />
 
-          <Stack.Screen
-            name="settings"
-            options={{
-              title: 'Settings',
-              headerStyle: { backgroundColor: currentTheme.colors.background },
-              headerTintColor: currentTheme.colors.text,
-            }}
-          />
-        </Stack>
-      </ThemeProvider>
-    </ThemeContext.Provider>
+            <Stack.Screen
+              name="stats"
+              options={{ title: 'Statistics' }}
+            />
+
+            <Stack.Screen
+              name="settings"
+              options={{ title: 'Settings' }}
+            />
+          </Stack>
+        </ThemeProvider>
+      </ThemeContext.Provider>
+    </SafeAreaProvider>
   );
 }
 
