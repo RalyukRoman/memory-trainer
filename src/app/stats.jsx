@@ -89,9 +89,8 @@ export default function StatsPage() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
+
   safeArea: {
     flex: 1,
     alignItems: 'center',

@@ -205,12 +205,9 @@ export default function GamePage() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  safeArea: {
-    flex: 1,
-  },
+  container: { flex: 1 },
+  safeArea:  { flex: 1 },
+
   main: {
     flex: 1,
     justifyContent: 'center',
