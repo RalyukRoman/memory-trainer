@@ -1,10 +1,9 @@
-import { StyleSheet } from 'react-native';
-
-import ThemedText      from '../ui/themed-text';
-import ThemedView      from '../ui/themed-view';
-import SettingsInputRow from './settings-input-row';
-
+import { StyleSheet }             from 'react-native';
 import { SPACING, BORDER_RADIUS } from '../../constants/tokens';
+
+import ThemedText       from '../ui/themed-text';
+import ThemedView       from '../ui/themed-view';
+import SettingsInputRow from './settings-input-row';
 
 const CONFIGS_FIELDS = [
   { key: 'pointsPerLevel',      label: 'Points for 1 level',          keyboardType: 'number-pad' },

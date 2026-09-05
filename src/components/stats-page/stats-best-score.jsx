@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import { useTheme }         from 'expo-router';
+import { SPACING }          from '../../constants/tokens';
 
-import ThemedText  from '../ui/themed-text';
-import { SPACING } from '../../constants/tokens';
+import ThemedText from '../ui/themed-text';
 
 export default function StatsBestScore({ bestScore }) {
   const theme = useTheme();

@@ -1,8 +1,7 @@
 import { StyleSheet, View, Pressable } from 'react-native';
 import { Link, useTheme }              from 'expo-router';
 import { Ionicons }                    from '@expo/vector-icons';
-
-import { SPACING } from '../../constants/tokens';
+import { SPACING }                     from '../../constants/tokens';
 
 export default function GameTopBar() {
   const theme = useTheme();

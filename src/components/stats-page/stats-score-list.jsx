@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import { useTheme }         from 'expo-router';
+import { SPACING }          from '../../constants/tokens';
 
 import StatsScoreItem from './stats-score-item';
-import { SPACING }    from '../../constants/tokens';
 
 export default function StatsScoreList({ data }) {
   const theme = useTheme();

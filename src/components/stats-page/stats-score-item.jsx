@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
-import ThemedText           from '../ui/themed-text';
 import { SPACING }          from '../../constants/tokens';
+
+import ThemedText from '../ui/themed-text';
 
 export default function StatsScoreItem({ item }) {
   return (

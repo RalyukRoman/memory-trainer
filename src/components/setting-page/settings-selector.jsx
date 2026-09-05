@@ -1,10 +1,9 @@
 import { StyleSheet, View, Pressable } from 'react-native';
 import { useTheme }                    from 'expo-router';
+import { SPACING, BORDER_RADIUS }      from '../../constants/tokens';
 
 import ThemedText from '../ui/themed-text';
 import ThemedView from '../ui/themed-view';
-
-import { SPACING, BORDER_RADIUS } from '../../constants/tokens';
 
 export default function SettingsSelector({
   title, options, selectedValue, onSelect,

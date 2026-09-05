@@ -1,9 +1,8 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View }       from 'react-native';
+import { BORDER_RADIUS, SPACING } from '../../constants/tokens';
 
 import ThemedText  from '../ui/themed-text';
 import ThemedInput from '../ui/themed-input';
-
-import { BORDER_RADIUS, SPACING } from '../../constants/tokens';
 
 export default function SettingsInputRow({
   label, value, onChangeText,

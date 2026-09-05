@@ -1,9 +1,8 @@
 import { StyleSheet, View } from 'react-native';
+import { SPACING }          from '../../constants/tokens';
 
 import GameInput        from './game-input';
 import GameActionButton from './game-action-button';
-
-import { SPACING } from '../../constants/tokens';
 
 export default function GameBar({
   input, setInput, inputRef,

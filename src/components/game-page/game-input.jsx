@@ -1,9 +1,8 @@
 import { StyleSheet, View } from 'react-native';
+import { GAME_PHASES }      from '../../constants/game-values';
+import { SPACING }          from '../../constants/tokens';
 
 import ThemedInput from '../ui/themed-input';
-
-import { GAME_PHASES } from '../../constants/game-values';
-import { SPACING }     from '../../constants/tokens';
 
 export default function GameInput({
   input, setInput, inputRef,

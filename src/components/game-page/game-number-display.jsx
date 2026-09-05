@@ -1,11 +1,11 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { useTheme }                     from 'expo-router';
 
-import ThemedText from '../ui/themed-text';
-import ThemedView from '../ui/themed-view';
-
 import { GAME_PHASES }            from '../../constants/game-values';
 import { SPACING, BORDER_RADIUS } from '../../constants/tokens';
+
+import ThemedText from '../ui/themed-text';
+import ThemedView from '../ui/themed-view';
 
 export default function GameNumberDisplay({
    phase, digits

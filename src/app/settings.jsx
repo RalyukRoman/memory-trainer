@@ -2,18 +2,16 @@ import { useState, useEffect }    from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView }           from 'react-native-safe-area-context';
 
-import { useThemeContext } from './_layout';
-import { settingsService } from '../services/settings-service';
-
-import ThemedText from '../components/ui/themed-text';
-import ThemedView from '../components/ui/themed-view';
-
-import SettingsSelector from '../components/setting-page/settings-selector';
-import SettingsConfigs  from '../components/setting-page/settings-configs';
-
+import { useThemeContext }                   from './_layout';
+import { settingsService }                   from '../services/settings-service';
 import { THEMES }                            from '../constants/theme';
 import { SPACING }                           from '../constants/tokens';
 import { DIFFICULTY_PRESETS, DIFFICULTIES }  from '../constants/game-values';
+
+import ThemedText       from '../components/ui/themed-text';
+import ThemedView       from '../components/ui/themed-view';
+import SettingsSelector from '../components/setting-page/settings-selector';
+import SettingsConfigs  from '../components/setting-page/settings-configs';
 
 export default function SettingsPage() {
   const { loadTheme: loadThemeInApp } = useThemeContext();

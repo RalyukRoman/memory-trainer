@@ -1,23 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View }                         from 'react-native';
-import { SafeAreaView }                             from 'react-native-safe-area-context';
-import { useFocusEffect }                           from 'expo-router';
+
+import { StyleSheet, View } from 'react-native';
+import { SafeAreaView }     from 'react-native-safe-area-context';
+import { useFocusEffect }   from 'expo-router';
+
+import { gameDb }                        from '../services/game-db';
+import { settingsService }               from '../services/settings-service';
+import { scoreService }                  from '../services/score-service';
+import { gameCalculator }                from '../services/game-calculator';
+
+import { BORDER_RADIUS, SPACING }        from '../constants/tokens';
+import { DEFAULT_SETTINGS, GAME_PHASES } from '../constants/game-values';
 
 import GameNumberDisplay from '../components/game-page/game-number-display';
 import GameInfo          from '../components/game-page/game-info';
 import GameBar           from '../components/game-page/game-bar';
 import GameScoreBoard    from '../components/game-page/game-score-board';
 import GameTopBar        from '../components/game-page/game-top-bar';
-
-import ThemedText from "../components/ui/themed-text";
-import ThemedView from '../components/ui/themed-view';
-
-import { gameDb }                        from '../services/game-db';
-import { settingsService }               from '../services/settings-service';
-import { scoreService }                  from '../services/score-service';
-import { gameCalculator }                from '../services/game-calculator';
-import { BORDER_RADIUS, SPACING }        from '../constants/tokens';
-import { DEFAULT_SETTINGS, GAME_PHASES } from '../constants/game-values';
+import ThemedText        from "../components/ui/themed-text";
+import ThemedView        from '../components/ui/themed-view';
 
 export default function GamePage() {
   const [gameConfig, setGameConfig] = useState(DEFAULT_SETTINGS.config);

@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { SafeAreaProvider }                               from "react-native-safe-area-context";
 
-import { ThemeProvider }  from 'expo-router';
-import { useColorScheme } from 'react-native';
-import { Stack }          from 'expo-router';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ThemeProvider }    from 'expo-router';
+import { useColorScheme }   from 'react-native';
+import { Stack }            from 'expo-router';
 
 import { settingsService }             from '../services/settings-service';
 import { AppLightTheme, AppDarkTheme } from '../constants/theme';
@@ -25,14 +25,17 @@ export default function RootLayout() {
     setThemeMode(theme);
   };
 
+  const isSystemDark =
+    themeMode   === 'system' &&
+    colorScheme === 'dark';
+
   const isDark =
     themeMode === 'dark' ||
-    (themeMode === 'system' &&
-      colorScheme === 'dark');
+    isSystemDark;
 
   const currentTheme = isDark
     ? AppDarkTheme
-    : AppLightTheme
+    : AppLightTheme;
 
   return (
     <SafeAreaProvider>
@@ -44,20 +47,9 @@ export default function RootLayout() {
               headerTintColor: currentTheme.colors.text,
             }}
           >
-            <Stack.Screen
-              name="index"
-              options={{ headerShown: false }}
-            />
-
-            <Stack.Screen
-              name="stats"
-              options={{ title: 'Statistics' }}
-            />
-
-            <Stack.Screen
-              name="settings"
-              options={{ title: 'Settings' }}
-            />
+            <Stack.Screen name="index"    options={{ headerShown: false }} />
+            <Stack.Screen name="stats"    options={{ title: 'Statistics' }} />
+            <Stack.Screen name="settings" options={{ title: 'Settings' }} />
           </Stack>
         </ThemeProvider>
       </ThemeContext.Provider>
@@ -65,6 +57,5 @@ export default function RootLayout() {
   );
 }
 
-export const useThemeContext = () => (
-  useContext(ThemeContext)
-);
+export const useThemeContext =
+  () => useContext(ThemeContext);

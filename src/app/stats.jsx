@@ -3,9 +3,8 @@ import { StyleSheet, View, Alert } from 'react-native';
 import { SafeAreaView }            from 'react-native-safe-area-context';
 import { useFocusEffect }          from 'expo-router';
 
-import ThemedText from '../components/ui/themed-text';
-import ThemedView from '../components/ui/themed-view';
-
+import ThemedText       from '../components/ui/themed-text';
+import ThemedView       from '../components/ui/themed-view';
 import StatsResetButton from '../components/stats-page/stats-reset-button';
 import StatsScoreList   from '../components/stats-page/stats-score-list';
 import StatsBestScore   from '../components/stats-page/stats-best-score';

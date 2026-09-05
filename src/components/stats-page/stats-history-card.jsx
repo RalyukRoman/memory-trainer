@@ -1,11 +1,10 @@
 import { StyleSheet, View, FlatList } from 'react-native';
 import { useTheme }                   from 'expo-router';
+import { SPACING, BORDER_RADIUS }     from '../../constants/tokens';
 
 import ThemedText       from '../ui/themed-text';
 import ThemedView       from '../ui/themed-view';
 import StatsHistoryItem from './stats-history-item';
-
-import { SPACING, BORDER_RADIUS } from '../../constants/tokens';
 
 export default function StatsHistoryCard({ history }) {
   const theme = useTheme();

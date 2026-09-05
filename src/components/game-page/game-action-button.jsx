@@ -1,10 +1,10 @@
 import { StyleSheet, Pressable } from 'react-native';
 import { useTheme }              from 'expo-router';
 
-import ThemedText   from "../ui/themed-text";
-
 import { GAME_PHASES }            from '../../constants/game-values';
 import { SPACING, BORDER_RADIUS } from '../../constants/tokens';
+
+import ThemedText from "../ui/themed-text";
 
 export default function GameActionButton({
   phase, isCorrect,
