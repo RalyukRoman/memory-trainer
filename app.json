@@ -15,7 +15,8 @@
         "foregroundImage": "./assets/images/android-icon.png",
         "backgroundColor": "#121212"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ralrom09.memorytrainer"
     },
     "web": {
       "output": "static",
@@ -36,6 +37,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "08442541-314f-4bf4-a0b8-3f35e3d248a3"
+      }
     }
   }
 }
